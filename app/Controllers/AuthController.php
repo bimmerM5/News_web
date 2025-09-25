@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Database;
+use App\Models\UserModel;
 
 class AuthController extends Controller
 {
@@ -19,10 +19,8 @@ class AuthController extends Controller
             $this->view('auth/login', ['error' => 'Thiếu thông tin']);
             return;
         }
-        $pdo = Database::getConnection();
-        $s = $pdo->prepare('SELECT user_id, username, password_hash FROM users WHERE username = ?');
-        $s->execute([$username]);
-        $user = $s->fetch();
+        $userModel = new UserModel();
+        $user = $userModel->findByUsername($username);
         if (!$user) {
             $this->view('auth/login', ['error' => 'Sai tài khoản hoặc mật khẩu']);
             return;
@@ -60,7 +58,7 @@ class AuthController extends Controller
             return;
         }
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $pdo = Database::getConnection();
+        $pdo = (new UserModel())->pdo;
         try {
             $stmt = $pdo->prepare('CALL sp_register_user(?, ?, ?, ?)');
             $stmt->execute([$username, $hash, $email, $fullname]);

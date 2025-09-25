@@ -2,34 +2,28 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Database;
+use App\Models\ArticleModel;
+use App\Models\CommentModel;
 
 class ApiController extends Controller
 {
     public function articles(): void
     {
-        $pdo = Database::getConnection();
-        $q = $pdo->query("SELECT article_id, title, summary, created_at FROM articles WHERE status='published' ORDER BY created_at DESC LIMIT 20");
-        $this->json(['data' => $q->fetchAll()]);
+        [$rows, $total] = (new ArticleModel())->getPublishedArticles(1, 20, null);
+        $this->json(['data' => $rows]);
     }
 
     public function article(int $id): void
     {
-        $pdo = Database::getConnection();
-        $s = $pdo->prepare("SELECT article_id, title, summary, created_at FROM articles WHERE article_id = ?");
-        $s->execute([$id]);
-        $this->json(['data' => $s->fetch()]);
+        $details = (new ArticleModel())->getByIdWithDetails($id);
+        $this->json(['data' => $details ? $details['article'] : null]);
     }
 
     public function comments(): void
     {
         $articleId = (int)($_GET['article_id'] ?? 0);
-        $pdo = Database::getConnection();
-        $s = $pdo->prepare("SELECT c.comment_id, c.content, c.created_at, u.username
-                             FROM comments c JOIN users u ON u.user_id = c.user_id
-                             WHERE c.article_id = ? ORDER BY c.created_at ASC");
-        $s->execute([$articleId]);
-        $this->json(['data' => $s->fetchAll()]);
+        $comments = (new CommentModel())->listForArticle($articleId);
+        $this->json(['data' => $comments]);
     }
 
     public function createComment(): void
@@ -45,9 +39,7 @@ class ApiController extends Controller
             $this->json(['error' => 'Invalid input'], 400);
             return;
         }
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("CALL sp_add_comment(?, ?, ?)");
-        $stmt->execute([$articleId, (int)$_SESSION['user_id'], $content]);
+        (new CommentModel())->create($articleId, (int)$_SESSION['user_id'], $content);
         $this->json(['message' => 'ok']);
     }
 
