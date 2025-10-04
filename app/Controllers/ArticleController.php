@@ -49,11 +49,12 @@ class ArticleController extends Controller
         $cat->execute();
         $category = $cat->fetch();
 
-        $stmt = $pdo->prepare("SELECT a.article_id, a.title, a.summary, a.created_at
-                               FROM articles a
-                               WHERE a.status='published' AND a.category_id=:cid
-                               ORDER BY a.created_at DESC
-                               LIMIT :per OFFSET :off");
+    $stmt = $pdo->prepare("SELECT a.article_id, a.title, a.summary, a.created_at,
+                   (SELECT am.media_url FROM article_media am WHERE am.article_id = a.article_id AND am.media_type='image' ORDER BY am.media_id ASC LIMIT 1) AS thumb
+                   FROM articles a
+                   WHERE a.status='published' AND a.category_id=:cid
+                   ORDER BY a.created_at DESC
+                   LIMIT :per OFFSET :off");
         $stmt->bindValue(':cid', $id, \PDO::PARAM_INT);
         $stmt->bindValue(':per', $per, \PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, \PDO::PARAM_INT);

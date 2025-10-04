@@ -16,6 +16,9 @@
                 <?php foreach ($articles as $a): ?>
                     <div class="col-sm-6 col-lg-4">
                         <div class="card h-100">
+                            <?php if (!empty($a['thumb'])): ?>
+                            <img class="article-thumb" src="<?= htmlspecialchars($baseUrl) ?>/<?= htmlspecialchars($a['thumb']) ?>" alt="<?= htmlspecialchars($a['title']) ?>">
+                            <?php endif; ?>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title mb-2"><a href="<?= htmlspecialchars($baseUrl) ?>/article/<?= (int)$a['article_id'] ?>"><?= htmlspecialchars($a['title']) ?></a></h5>
                                 <div class="text-muted small mb-3"><?= htmlspecialchars($a['created_at']) ?></div>

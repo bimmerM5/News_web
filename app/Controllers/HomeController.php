@@ -21,12 +21,13 @@ class HomeController extends Controller
             $params[':cat'] = $catId;
         }
 
-        $sql = "SELECT a.article_id, a.title, a.summary, a.created_at, c.category_name
-                FROM articles a
-                LEFT JOIN categories c ON a.category_id = c.category_id
-                $where
-                ORDER BY a.created_at DESC
-                LIMIT :per OFFSET :off";
+    $sql = "SELECT a.article_id, a.title, a.summary, a.created_at, c.category_name,
+               (SELECT am.media_url FROM article_media am WHERE am.article_id = a.article_id AND am.media_type='image' ORDER BY am.media_id ASC LIMIT 1) AS thumb
+        FROM articles a
+        LEFT JOIN categories c ON a.category_id = c.category_id
+        $where
+        ORDER BY a.created_at DESC
+        LIMIT :per OFFSET :off";
         $stmt = $pdo->prepare($sql);
         foreach ($params as $k => $v) { $stmt->bindValue($k, $v, \PDO::PARAM_INT); }
         $stmt->bindValue(':per', $per, \PDO::PARAM_INT);
