@@ -132,3 +132,58 @@ a.card.news-card:hover .card-title{
   background: linear-gradient(135deg, var(--chip), var(--brand-2));
   color:#08101e; border:0;
 }
+
+
+/* === Contrast & placeholder tweaks === */
+:root{
+  --muted:#c7d2e6;           /* lighter for visibility */
+  --placeholder:#c2cde0;     /* placeholder/text-muted for inputs */
+}
+.text-muted{ color: var(--muted) !important; }
+.form-label, .filter-label, .home-filter label{ color: #d6def0; }
+
+/* Placeholder color */
+::placeholder{ color: var(--placeholder); opacity: 1; }
+.form-control::placeholder, .form-select::placeholder{ color: var(--placeholder); opacity: 1; }
+
+
+/* === Background smoothing (no tiling/banding on subpages) === */
+body{
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 1800px 1200px, 1800px 1200px, auto;
+}
+
+
+/* === Panel for forms/search/etc === */
+.panel{
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)),
+              var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+}
+.panel-page{
+  backdrop-filter: saturate(130%) blur(4px);
+}
+.help-muted{ color:#d0dcf0; margin: .75rem 0 0; }
+
+
+/* === Home filter select: pill style === */
+.home-filter .form-select{
+  border-radius: 999px;
+  padding-left: 1rem; padding-right: 2.2rem;
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+              #0f172a;
+  border-color: var(--border);
+  color: var(--text);
+  transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.home-filter .form-select:focus{
+  border-color: #4ea3ff;
+  box-shadow: 0 0 0 .2rem rgba(78,163,255,.18);
+}
+.home-filter .filter-label{
+  font-weight: 600; letter-spacing: .2px; opacity: .95;
+}
