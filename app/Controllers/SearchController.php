@@ -14,7 +14,8 @@ class SearchController extends Controller
         $per = 9; $offset = ($page-1)*$per;
         $articles = []; $pages = 1;
         if ($q !== '') {
-            $stmt = $pdo->prepare("SELECT a.article_id, a.title, a.summary, a.created_at
+            $stmt = $pdo->prepare("SELECT a.article_id, a.title, a.summary, a.created_at,
+                                   (SELECT am.media_url FROM article_media am WHERE am.article_id = a.article_id AND am.media_type='image' ORDER BY am.media_id ASC LIMIT 1) AS thumb
                                    FROM articles a
                                    WHERE a.status='published' AND (a.title LIKE :kw1 OR a.summary LIKE :kw2)
                                    ORDER BY a.created_at DESC
