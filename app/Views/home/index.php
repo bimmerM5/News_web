@@ -20,6 +20,9 @@
             <?php foreach ($articles as $a): ?>
             <div class="col-sm-6 col-lg-4">
                 <div class="card h-100">
+                    <?php if (!empty($a['thumb'])): ?>
+                    <img class="article-thumb" src="<?= htmlspecialchars($baseUrl) ?>/<?= htmlspecialchars($a['thumb']) ?>" alt="<?= htmlspecialchars($a['title']) ?>">
+                    <?php endif; ?>
                     <div class="card-body d-flex flex-column">
                         <div class="mb-2">
                             <span class="badge badge-cat"><?= htmlspecialchars($a['category_name'] ?? '—') ?></span>

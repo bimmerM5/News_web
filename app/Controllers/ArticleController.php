@@ -28,15 +28,23 @@ class ArticleController extends Controller
 
     public function category(int $id): void
     {
-        $pdo = (new ArticleModel())->pdo;
         $page = max(1, (int)($_GET['page'] ?? 1));
         $per = 9;
+
+        // Lấy thông tin danh mục
         $categoryModel = new CategoryModel();
         $category = $categoryModel->find($id);
 
+        // Lấy danh sách bài viết và tổng số lượng
         [$articles, $total] = (new ArticleModel())->getByCategory($id, $page, $per);
         $pages = (int)ceil($total / $per);
 
-        $this->view('article/category', ['category' => $category, 'articles' => $articles, 'page' => $page, 'pages' => $pages]);
+        // Hiển thị giao diện
+        $this->view('article/category', [
+            'category' => $category,
+            'articles' => $articles,
+            'page' => $page,
+            'pages' => $pages
+        ]);
     }
 }

@@ -13,13 +13,21 @@ class HomeController extends Controller
         $per = 9;
         $catId = isset($_GET['cat']) ? (int)$_GET['cat'] : 0;
 
+        // Lấy danh sách bài viết (nếu có bộ lọc theo category)
         $articleModel = new ArticleModel();
-        [$articles, $total] = $articleModel->getPublishedArticles($page, $per, $catId > 0 ? $catId : null);
+        [$articles, $total] = $articleModel->getPublishedArticles(
+            $page,
+            $per,
+            $catId > 0 ? $catId : null
+        );
+
         $pages = (int)ceil($total / $per);
 
+        // Lấy danh sách danh mục để hiển thị trong menu
         $categoryModel = new CategoryModel();
         $categories = $categoryModel->listAll();
 
+        // Gửi dữ liệu sang view
         $this->view('home/index', [
             'articles' => $articles,
             'page' => $page,
@@ -33,6 +41,9 @@ class HomeController extends Controller
     {
         $categoryModel = new CategoryModel();
         $rows = $categoryModel->listWithTotals();
-        $this->view('home/categories', ['rows' => $rows]);
+
+        $this->view('home/categories', [
+            'rows' => $rows
+        ]);
     }
 }
