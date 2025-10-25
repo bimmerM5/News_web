@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Database;
+use App\Models\CategoryModel;
 
 class AdminController extends Controller
 {
@@ -28,8 +29,7 @@ class AdminController extends Controller
     public function listCategories(): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $rows = $pdo->query("SELECT * FROM categories ORDER BY category_name")->fetchAll();
+        $rows = (new CategoryModel())->listAll();
         $this->view('admin/categories/index', ['rows' => $rows]);
     }
 
@@ -45,9 +45,7 @@ class AdminController extends Controller
         $name = trim($_POST['category_name'] ?? '');
         $desc = trim($_POST['description'] ?? '');
         if ($name !== '') {
-            $pdo = Database::getConnection();
-            $stmt = $pdo->prepare("INSERT INTO categories(category_name, description) VALUES(?, ?)");
-            $stmt->execute([$name, $desc]);
+            (new CategoryModel())->create($name, $desc);
         }
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/categories');
@@ -56,10 +54,7 @@ class AdminController extends Controller
     public function editCategory(int $id): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $s = $pdo->prepare("SELECT * FROM categories WHERE category_id = ?");
-        $s->execute([$id]);
-        $row = $s->fetch();
+        $row = (new CategoryModel())->find($id);
         $this->view('admin/categories/edit', ['row' => $row]);
     }
 
@@ -68,9 +63,7 @@ class AdminController extends Controller
         $this->ensureAdmin();
         $name = trim($_POST['category_name'] ?? '');
         $desc = trim($_POST['description'] ?? '');
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("UPDATE categories SET category_name=?, description=? WHERE category_id=?");
-        $stmt->execute([$name, $desc, $id]);
+        (new CategoryModel())->update($id, $name, $desc);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/categories');
     }
@@ -78,9 +71,7 @@ class AdminController extends Controller
     public function deleteCategory(int $id): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("DELETE FROM categories WHERE category_id=?");
-        $stmt->execute([$id]);
+        (new CategoryModel())->delete($id);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/categories');
     }
