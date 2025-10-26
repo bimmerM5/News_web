@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\ArticleModel;
 use App\Models\CommentModel;
+use App\Core\Database;
 
 class ApiController extends Controller
 {

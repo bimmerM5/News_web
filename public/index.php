@@ -3,6 +3,11 @@ session_start();
 require_once __DIR__ . '/../app/Core/Router.php';
 require_once __DIR__ . '/../app/Core/Controller.php';
 require_once __DIR__ . '/../app/Core/Database.php';
+// Queries (used by models)
+require_once __DIR__ . '/../app/Queries/ArticleQueries.php';
+require_once __DIR__ . '/../app/Queries/CategoryQueries.php';
+require_once __DIR__ . '/../app/Queries/CommentQueries.php';
+require_once __DIR__ . '/../app/Queries/UserQueries.php';
 require_once __DIR__ . '/../app/Models/BaseModel.php';
 require_once __DIR__ . '/../app/Models/ArticleModel.php';
 require_once __DIR__ . '/../app/Models/CategoryModel.php';

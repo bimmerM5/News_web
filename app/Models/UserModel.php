@@ -1,11 +1,14 @@
 <?php
 namespace App\Models;
 
+use App\Queries\UserQueries;
+
 class UserModel extends BaseModel
 {
     public function findByUsername(string $username): ?array
     {
-        $s = $this->pdo->prepare('SELECT user_id, username, password_hash FROM users WHERE username = ?');
+        $sql = UserQueries::findByUsername();
+        $s = $this->pdo->prepare($sql);
         $s->execute([$username]);
         $row = $s->fetch();
         return $row ?: null;
@@ -13,9 +16,8 @@ class UserModel extends BaseModel
 
     public function getProfile(int $userId): ?array
     {
-        $u = $this->pdo->prepare("SELECT u.user_id, u.username, up.full_name, up.avatar_url, up.bio
-                             FROM users u LEFT JOIN user_profiles up ON up.user_id = u.user_id
-                             WHERE u.user_id=?");
+        $sql = UserQueries::getProfile();
+        $u = $this->pdo->prepare($sql);
         $u->execute([$userId]);
         $row = $u->fetch();
         return $row ?: null;
@@ -23,7 +25,8 @@ class UserModel extends BaseModel
 
     public function getUserArticles(int $userId): array
     {
-        $a = $this->pdo->prepare("SELECT article_id, title, status, created_at FROM articles WHERE user_id=? ORDER BY created_at DESC");
+        $sql = UserQueries::getUserArticles();
+        $a = $this->pdo->prepare($sql);
         $a->execute([$userId]);
         return $a->fetchAll();
     }

@@ -1,25 +1,26 @@
 <?php
 namespace App\Models;
 
+use App\Queries\CategoryQueries;
+
 class CategoryModel extends BaseModel
 {
     public function listAll(): array
     {
-        return $this->pdo->query("SELECT * FROM categories ORDER BY category_name")->fetchAll();
+        $sql = CategoryQueries::listAll();
+        return $this->pdo->query($sql)->fetchAll();
     }
 
     public function listWithTotals(): array
     {
-        return $this->pdo->query("SELECT c.category_id, c.category_name, c.description, COUNT(a.article_id) AS total
-                             FROM categories c
-                             LEFT JOIN articles a ON a.category_id = c.category_id AND a.status='published'
-                             GROUP BY c.category_id, c.category_name, c.description
-                             ORDER BY c.category_name")->fetchAll();
+        $sql = CategoryQueries::listWithTotals();
+        return $this->pdo->query($sql)->fetchAll();
     }
 
     public function find(int $id): ?array
     {
-        $s = $this->pdo->prepare("SELECT * FROM categories WHERE category_id = ?");
+        $sql = CategoryQueries::find();
+        $s = $this->pdo->prepare($sql);
         $s->execute([$id]);
         $row = $s->fetch();
         return $row ?: null;
@@ -27,19 +28,22 @@ class CategoryModel extends BaseModel
 
     public function create(string $name, string $description): void
     {
-        $stmt = $this->pdo->prepare("INSERT INTO categories(category_name, description) VALUES(?, ?)");
+        $sql = CategoryQueries::create();
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$name, $description]);
     }
 
     public function update(int $id, string $name, string $description): void
     {
-        $stmt = $this->pdo->prepare("UPDATE categories SET category_name=?, description=? WHERE category_id=?");
+        $sql = CategoryQueries::update();
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$name, $description, $id]);
     }
 
     public function delete(int $id): void
     {
-        $stmt = $this->pdo->prepare("DELETE FROM categories WHERE category_id=?");
+        $sql = CategoryQueries::delete();
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
     }
 }
