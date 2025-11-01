@@ -64,7 +64,6 @@ class AuthController extends Controller
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = (string)($_POST['password'] ?? '');
-        $fullname = trim($_POST['fullname'] ?? '');
 
         if ($username === '' || $email === '' || $password === '') {
             $this->view('auth/register', ['error' => 'Thiếu thông tin']);
@@ -78,9 +77,9 @@ class AuthController extends Controller
         $pdo = Database::getConnection();
 
         try {
-            // Gọi stored procedure để đăng ký
+            // Gọi stored procedure để đăng ký (không có full_name)
             $stmt = $pdo->prepare(AdminQueries::registerUser());
-            $stmt->execute([$username, $hash, $email, $fullname]);
+            $stmt->execute([$username, $hash, $email, null]);
         } catch (\PDOException $e) {
             $this->view('auth/register', ['error' => 'Không thể đăng ký: ' . $e->getMessage()]);
             return;
