@@ -26,15 +26,15 @@ $active = function(array $prefixes) use ($rel) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark mb-4">
     <div class="container">
-        <a class="navbar-brand" href="<?= htmlspecialchars($baseUrl) ?>/">News Web</a>
+        <a class="navbar-brand" href="<?= htmlspecialchars($baseUrl) ?>/">NEWS</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="topnav">
             <ul class="navbar-nav ms-auto align-items-lg-center">
-                <li class="nav-item"><a class="nav-link<?= $active(['/search']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/search">Search</a></li>
-                <li class="nav-item"><a class="nav-link<?= $active(['/admin/articles']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/admin/articles">Admin Articles</a></li>
-                <li class="nav-item"><a class="nav-link<?= $active(['/admin/categories']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/admin/categories">Admin Categories</a></li>
+                <li class="nav-item"><a class="nav-link<?= $active(['/search']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/search">Tìm kiếm</a></li>
+                <li class="nav-item"><a class="nav-link<?= $active(['/admin/articles']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/admin/articles">Quản lí bài biết</a></li>
+                <li class="nav-item"><a class="nav-link<?= $active(['/admin/categories']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/admin/categories">Quản lí danh mục</a></li>
                 <?php if (!empty($_SESSION['user_id'])): ?>
                     <li class="nav-item text-white ms-lg-3">Xin chào, <?= htmlspecialchars($_SESSION['username'] ?? 'user') ?></li>
                     <li class="nav-item ms-lg-2">

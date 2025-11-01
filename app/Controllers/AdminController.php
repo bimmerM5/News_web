@@ -4,6 +4,10 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Database;
 use App\Models\CategoryModel;
+use App\Queries\UserQueries;
+use App\Queries\ArticleQueries;
+use App\Queries\CategoryQueries;
+use App\Queries\AdminQueries;
 
 class AdminController extends Controller
 {
@@ -14,10 +18,7 @@ class AdminController extends Controller
             exit;
         }
         $pdo = Database::getConnection();
-        $s = $pdo->prepare("SELECT 1
-                             FROM user_roles ur
-                             JOIN roles r ON r.role_id = ur.role_id
-                             WHERE ur.user_id = ? AND r.role_name = 'admin' LIMIT 1");
+        $s = $pdo->prepare(UserQueries::checkAdminRole());
         $s->execute([(int)$_SESSION['user_id']]);
         if (!$s->fetchColumn()) {
             http_response_code(403);
@@ -80,9 +81,7 @@ class AdminController extends Controller
     {
         $this->ensureAdmin();
         $pdo = Database::getConnection();
-        $rows = $pdo->query("SELECT a.article_id, a.title, a.status, a.created_at, c.category_name
-                              FROM articles a LEFT JOIN categories c ON a.category_id=c.category_id
-                              ORDER BY a.created_at DESC")->fetchAll();
+        $rows = $pdo->query(ArticleQueries::getAllArticlesForAdmin())->fetchAll();
         $this->view('admin/articles/index', ['rows' => $rows]);
     }
 
@@ -90,7 +89,7 @@ class AdminController extends Controller
     {
         $this->ensureAdmin();
         $pdo = Database::getConnection();
-        $cats = $pdo->query("SELECT * FROM categories ORDER BY category_name")->fetchAll();
+        $cats = $pdo->query(CategoryQueries::listAll())->fetchAll();
         $this->view('admin/articles/create', ['categories' => $cats]);
     }
 
@@ -104,7 +103,7 @@ class AdminController extends Controller
         $user = (int)($_SESSION['user_id']);
         if ($title !== '') {
             $pdo = Database::getConnection();
-            $stmt = $pdo->prepare("CALL sp_create_article(?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare(AdminQueries::createArticle());
             $stmt->execute([$title, $summary, $content, $user, $cat]);
             $articleId = (int)($stmt->fetchColumn() ?: 0);
             $stmt->closeCursor();
@@ -113,7 +112,7 @@ class AdminController extends Controller
             } elseif (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
                 $url = $this->saveUpload($_FILES['image']);
                 if ($url) {
-                    $ins = $pdo->prepare("INSERT INTO article_media(article_id, media_url, media_type) VALUES(?, ?, 'image')");
+                    $ins = $pdo->prepare(ArticleQueries::createMedia());
                     $ins->execute([$articleId, $url]);
                 }
             }
@@ -126,14 +125,14 @@ class AdminController extends Controller
     {
         $this->ensureAdmin();
         $pdo = Database::getConnection();
-        $a = $pdo->prepare("SELECT * FROM articles WHERE article_id=?");
+        $a = $pdo->prepare(ArticleQueries::getById());
         $a->execute([$id]);
         $article = $a->fetch();
-        $c = $pdo->query("SELECT * FROM categories ORDER BY category_name")->fetchAll();
-        $ac = $pdo->prepare("SELECT content FROM article_contents WHERE article_id=?");
+        $c = $pdo->query(CategoryQueries::listAll())->fetchAll();
+        $ac = $pdo->prepare(ArticleQueries::getContent());
         $ac->execute([$id]);
         $content = $ac->fetchColumn();
-        $m = $pdo->prepare("SELECT media_url FROM article_media WHERE article_id=? AND media_type='image' ORDER BY media_id ASC");
+        $m = $pdo->prepare(ArticleQueries::getMedia());
         $m->execute([$id]);
         $images = $m->fetchAll();
         $this->view('admin/articles/edit', ['article' => $article, 'categories' => $c, 'content' => $content, 'images' => $images]);
@@ -147,9 +146,9 @@ class AdminController extends Controller
         $content = trim($_POST['content'] ?? '');
         $cat = (int)($_POST['category_id'] ?? 0);
         $pdo = Database::getConnection();
-        $u = $pdo->prepare("UPDATE articles SET title=?, summary=?, category_id=? WHERE article_id=?");
+        $u = $pdo->prepare(ArticleQueries::updateArticle());
         $u->execute([$title, $summary, $cat, $id]);
-        $uc = $pdo->prepare("UPDATE article_contents SET content=? WHERE article_id=?");
+        $uc = $pdo->prepare(ArticleQueries::updateContent());
         $uc->execute([$content, $id]);
         $this->handleMultiUploads($id, false);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
@@ -160,7 +159,7 @@ class AdminController extends Controller
     {
         $this->ensureAdmin();
         $pdo = Database::getConnection();
-        $d = $pdo->prepare("DELETE FROM articles WHERE article_id=?");
+        $d = $pdo->prepare(ArticleQueries::deleteArticle());
         $d->execute([$id]);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/articles');
@@ -170,7 +169,7 @@ class AdminController extends Controller
     {
         $this->ensureAdmin();
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("CALL sp_publish_article(?)");
+        $stmt = $pdo->prepare(AdminQueries::publishArticle());
         $stmt->execute([$id]);
         $stmt->closeCursor();
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
@@ -182,7 +181,7 @@ class AdminController extends Controller
         if (!isset($_FILES['images'])) { return; }
         $files = $_FILES['images'];
         if ($clearExisting) {
-            Database::getConnection()->prepare("DELETE FROM article_media WHERE article_id=? AND media_type='image'")->execute([$articleId]);
+            Database::getConnection()->prepare(ArticleQueries::deleteMedia())->execute([$articleId]);
         }
         $count = is_array($files['name']) ? count($files['name']) : 0;
         for ($i=0; $i<$count; $i++) {
@@ -193,7 +192,7 @@ class AdminController extends Controller
                 ];
                 $url = $this->saveUpload($file);
                 if ($url) {
-                    $stmt = Database::getConnection()->prepare("INSERT INTO article_media(article_id, media_url, media_type) VALUES(?, ?, 'image')");
+                    $stmt = Database::getConnection()->prepare(ArticleQueries::createMedia());
                     $stmt->execute([$articleId, $url]);
                 }
             }

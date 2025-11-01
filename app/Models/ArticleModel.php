@@ -80,6 +80,27 @@ class ArticleModel extends BaseModel
 
         return [$articles, $total];
     }
+
+    public function searchArticles(string $keyword, int $page, int $perPage): array
+    {
+        $offset = ($page - 1) * $perPage;
+        
+        $sql = ArticleQueries::searchArticles();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':kw', '%' . $keyword . '%');
+        $stmt->bindValue(':per', $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':off', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+        $articles = $stmt->fetchAll();
+
+        $cntSql = ArticleQueries::countSearchResults();
+        $cnt = $this->pdo->prepare($cntSql);
+        $cnt->bindValue(':kw', '%' . $keyword . '%');
+        $cnt->execute();
+        $total = (int)$cnt->fetchColumn();
+
+        return [$articles, $total];
+    }
 }
 
 
