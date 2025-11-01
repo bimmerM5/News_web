@@ -40,6 +40,20 @@ class ArticleModel extends BaseModel
         return [$rows, $total];
     }
 
+    public function incrementViews(int $id): bool
+    {
+        $sql = ArticleQueries::incrementViews();
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
+    public function addView(int $articleId, ?int $userId = null): bool
+    {
+        $sql = ArticleQueries::addView();
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$articleId, $userId]);
+    }
+
     public function getByIdWithDetails(int $id): ?array
     {
         $sql = ArticleQueries::getByIdWithDetails();

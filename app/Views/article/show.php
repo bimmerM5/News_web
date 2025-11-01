@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-9 mx-auto">
         <h1 class="article-title display-6 mb-2"><?= htmlspecialchars($article['title']) ?></h1>
-        <div class="article-meta mb-4">Danh mục: <?= htmlspecialchars($article['category_name'] ?? '—') ?> • Tác giả: <?= htmlspecialchars($article['username'] ?? '—') ?> • <?= htmlspecialchars($article['created_at']) ?></div>
+        <div class="article-meta mb-4">Danh mục: <?= htmlspecialchars($article['category_name'] ?? '—') ?> • Tác giả: <?= htmlspecialchars($article['username'] ?? '—') ?> • <?= htmlspecialchars($article['created_at']) ?> • <?= number_format($article['views_count']) ?> lượt xem</div>
 
         <?php if (!empty($images)): ?>
         <div class="row g-2 mb-4">

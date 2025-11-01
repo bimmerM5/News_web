@@ -30,11 +30,17 @@ class ArticleQueries
 
     public static function getByIdWithDetails(): string
     {
-        return "SELECT a.*, c.category_name, u.username
+        return "SELECT a.*, c.category_name, u.username,
+                (SELECT COUNT(*) FROM views v WHERE v.article_id = a.article_id) as views_count
                 FROM articles a
                 LEFT JOIN categories c ON a.category_id = c.category_id
                 LEFT JOIN users u ON a.user_id = u.user_id
                 WHERE a.article_id = ?";
+    }
+
+    public static function addView(): string
+    {
+        return "INSERT INTO views (article_id, user_id) VALUES (?, ?)";
     }
 
     public static function getContent(): string
@@ -45,6 +51,11 @@ class ArticleQueries
     public static function getMedia(): string
     {
         return "SELECT media_url FROM article_media WHERE article_id = ? AND media_type = 'image' ORDER BY media_id ASC";
+    }
+
+    public static function incrementViews(): string
+    {
+        return "UPDATE articles SET views = views + 1 WHERE article_id = ?";
     }
 
     public static function countPublishedArticles(): string
