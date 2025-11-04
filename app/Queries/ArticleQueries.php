@@ -44,7 +44,7 @@ class ArticleQueries
 
     public static function getMedia(): string
     {
-        return "SELECT media_url FROM article_media WHERE article_id = ? AND media_type = 'image' ORDER BY media_id ASC";
+        return "SELECT media_id, media_url, size_class, align_class, caption FROM article_media WHERE article_id = ? AND media_type = 'image' ORDER BY media_id ASC";
     }
 
     public static function countPublishedArticles(): string
@@ -100,7 +100,7 @@ class ArticleQueries
 
     public static function createMedia(): string
     {
-        return "INSERT INTO article_media(article_id, media_url, media_type) VALUES(?, ?, 'image')";
+        return "INSERT INTO article_media(article_id, media_url, media_type, size_class, align_class, caption) VALUES(?, ?, 'image', ?, ?, ?)";
     }
 
     public static function updateArticle(): string
@@ -121,5 +121,20 @@ class ArticleQueries
     public static function deleteMedia(): string
     {
         return "DELETE FROM article_media WHERE article_id=? AND media_type='image'";
+    }
+
+    public static function updateMediaOptions(): string
+    {
+        return "UPDATE article_media SET size_class = ?, align_class = ?, caption = ? WHERE media_id = ? AND article_id = ?";
+    }
+
+    public static function getMediaUrlByIdForArticle(): string
+    {
+        return "SELECT media_url FROM article_media WHERE media_id = ? AND article_id = ? AND media_type='image'";
+    }
+
+    public static function deleteMediaByIdForArticle(): string
+    {
+        return "DELETE FROM article_media WHERE media_id = ? AND article_id = ? AND media_type='image'";
     }
 }

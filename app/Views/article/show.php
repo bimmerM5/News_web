@@ -3,15 +3,18 @@
         <h1 class="article-title display-6 mb-2"><?= htmlspecialchars($article['title']) ?></h1>
         <div class="article-meta mb-4">Danh mục: <?= htmlspecialchars($article['category_name'] ?? '—') ?> • Tác giả: <?= htmlspecialchars($article['username'] ?? '—') ?> • <?= htmlspecialchars($article['created_at']) ?></div>
 
-        <?php if (!empty($images)): ?>
-        <div class="row g-2 mb-4">
-            <?php foreach ($images as $img): ?>
-                <div class="col-6 col-md-4"><img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" style="width:100%;border-radius:8px"></div>
-            <?php endforeach; ?>
-        </div>
-        <?php endif; ?>
-
         <div class="article-content mb-5">
+            <?php if (!empty($images)): ?>
+                <?php foreach ($images as $img): ?>
+                    <figure class="article-image <?= htmlspecialchars($img['size_class'] ?? 'img-medium') ?> <?= htmlspecialchars($img['align_class'] ?? 'img-center') ?>">
+                        <img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" alt="">
+                        <?php if (!empty($img['caption'])): ?>
+                        <figcaption><?= htmlspecialchars($img['caption']) ?></figcaption>
+                        <?php endif; ?>
+                    </figure>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
             <?= nl2br(htmlspecialchars($articleContent ?? '')) ?>
         </div>
 
