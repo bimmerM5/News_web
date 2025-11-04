@@ -112,8 +112,11 @@ class AdminController extends Controller
             } elseif (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
                 $url = $this->saveUpload($_FILES['image']);
                 if ($url) {
+                    $size = ($_POST['image_size'][0] ?? 'img-medium');
+                    $align = ($_POST['image_align'][0] ?? 'img-center');
+                    $caption = ($_POST['image_caption'][0] ?? null);
                     $ins = $pdo->prepare(ArticleQueries::createMedia());
-                    $ins->execute([$articleId, $url]);
+                    $ins->execute([$articleId, $url, $size, $align, $caption]);
                 }
             }
         }
@@ -150,6 +153,40 @@ class AdminController extends Controller
         $u->execute([$title, $summary, $cat, $id]);
         $uc = $pdo->prepare(ArticleQueries::updateContent());
         $uc->execute([$content, $id]);
+
+        // Delete selected images first
+        $delIds = $_POST['delete_media_id'] ?? [];
+        if (!empty($delIds)) {
+            $sel = $pdo->prepare(ArticleQueries::getMediaUrlByIdForArticle());
+            $del = $pdo->prepare(ArticleQueries::deleteMediaByIdForArticle());
+            foreach ($delIds as $mid) {
+                $mid = (int)$mid;
+                if ($mid <= 0) { continue; }
+                $sel->execute([$mid, $id]);
+                $url = $sel->fetchColumn();
+                $del->execute([$mid, $id]);
+                if ($url) { $this->removePhysicalFile((string)$url); }
+            }
+        }
+
+        // Update existing media display options
+        $mediaIds = $_POST['existing_media_id'] ?? [];
+        $sizes    = $_POST['existing_size'] ?? [];
+        $aligns   = $_POST['existing_align'] ?? [];
+        $captions = $_POST['existing_caption'] ?? [];
+        if (!empty($mediaIds)) {
+            $um = $pdo->prepare(ArticleQueries::updateMediaOptions());
+            foreach ($mediaIds as $i => $mid) {
+                $mid = (int)$mid;
+                if ($mid <= 0) { continue; }
+                $size = $sizes[$i] ?? 'img-medium';
+                $align = $aligns[$i] ?? 'img-center';
+                $caption = $captions[$i] ?? null;
+                $um->execute([$size, $align, $caption, $mid, $id]);
+            }
+        }
+
+        // Handle any newly added images
         $this->handleMultiUploads($id, false);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/articles');
@@ -183,6 +220,9 @@ class AdminController extends Controller
         if ($clearExisting) {
             Database::getConnection()->prepare(ArticleQueries::deleteMedia())->execute([$articleId]);
         }
+        $sizes = $_POST['image_size'] ?? [];
+        $aligns = $_POST['image_align'] ?? [];
+        $captions = $_POST['image_caption'] ?? [];
         $count = is_array($files['name']) ? count($files['name']) : 0;
         for ($i=0; $i<$count; $i++) {
             if (!empty($files['tmp_name'][$i]) && is_uploaded_file($files['tmp_name'][$i])) {
@@ -192,8 +232,11 @@ class AdminController extends Controller
                 ];
                 $url = $this->saveUpload($file);
                 if ($url) {
+                    $size = $sizes[$i] ?? 'img-medium';
+                    $align = $aligns[$i] ?? 'img-center';
+                    $caption = $captions[$i] ?? null;
                     $stmt = Database::getConnection()->prepare(ArticleQueries::createMedia());
-                    $stmt->execute([$articleId, $url]);
+                    $stmt->execute([$articleId, $url, $size, $align, $caption]);
                 }
             }
         }
@@ -211,5 +254,13 @@ class AdminController extends Controller
             return 'uploads/' . $name;
         }
         return null;
+    }
+
+    private function removePhysicalFile(string $mediaUrl): void
+    {
+        $root = realpath(__DIR__ . '/../../public');
+        $rel = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $mediaUrl);
+        $path = $root . DIRECTORY_SEPARATOR . ltrim($rel, DIRECTORY_SEPARATOR);
+        if (is_file($path)) { @unlink($path); }
     }
 }

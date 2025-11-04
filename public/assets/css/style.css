@@ -42,6 +42,18 @@ body{
 .article-content{font-size:1.05rem; line-height:1.8}
 .article-content p{margin-bottom:1rem}
 
+/* Article images */
+.article-image{margin:1rem 0}
+.article-image img{display:block; width:100%; height:auto; border-radius:8px}
+.article-image figcaption{color:var(--muted); text-align:center; font-size:.9rem; margin-top:.35rem}
+.img-small{max-width:360px}
+.img-medium{max-width:680px}
+.img-large{max-width:100%}
+.img-center{margin-left:auto; margin-right:auto}
+.img-left{float:left; margin-right:1rem}
+.img-right{float:right; margin-left:1rem}
+.article-content::after{content:''; display:block; clear:both}
+
 /* Comments */
 .list-group-item{background: #0f172a; color: var(--text); border-color:#1f2937}
 
