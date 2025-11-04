@@ -17,11 +17,14 @@ class ArticleController extends Controller
             echo 'Article not found';
             return;
         }
+<<<<<<< HEAD
         
         // Ghi lại lượt xem
         $userId = $_SESSION['user_id'] ?? null;
         $articleModel->addView($id, $userId);
         
+=======
+>>>>>>> d782790 (light and dark mode update)
         $comments = (new CommentModel())->listForArticle($id);
         $this->view('article/show', [
             'article' => $details['article'],

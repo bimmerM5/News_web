@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-lg-9 mx-auto">
         <h1 class="article-title display-6 mb-2"><?= htmlspecialchars($article['title']) ?></h1>
+<<<<<<< HEAD
         <div class="article-meta mb-4">Danh mục: <?= htmlspecialchars($article['category_name'] ?? '—') ?> • Tác giả: <?= htmlspecialchars($article['username'] ?? '—') ?> • <?= htmlspecialchars($article['created_at']) ?> • <?= number_format($article['views_count']) ?> lượt xem</div>
 
         <div class="article-content mb-5">
@@ -15,6 +16,19 @@
                 <?php endforeach; ?>
             <?php endif; ?>
 
+=======
+        <div class="article-meta mb-4">Danh mục: <?= htmlspecialchars($article['category_name'] ?? '—') ?> • Tác giả: <?= htmlspecialchars($article['username'] ?? '—') ?> • <?= htmlspecialchars($article['created_at']) ?></div>
+
+        <?php if (!empty($images)): ?>
+        <div class="row g-2 mb-4">
+            <?php foreach ($images as $img): ?>
+                <div class="col-6 col-md-4"><img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" style="width:100%;border-radius:8px"></div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+
+        <div class="article-content mb-5">
+>>>>>>> d782790 (light and dark mode update)
             <?= nl2br(htmlspecialchars($articleContent ?? '')) ?>
         </div>
 

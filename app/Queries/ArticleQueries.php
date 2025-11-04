@@ -30,19 +30,26 @@ class ArticleQueries
 
     public static function getByIdWithDetails(): string
     {
+<<<<<<< HEAD
         return "SELECT a.*, c.category_name, u.username,
                 (SELECT COUNT(*) FROM views v WHERE v.article_id = a.article_id) as views_count
+=======
+        return "SELECT a.*, c.category_name, u.username
+>>>>>>> d782790 (light and dark mode update)
                 FROM articles a
                 LEFT JOIN categories c ON a.category_id = c.category_id
                 LEFT JOIN users u ON a.user_id = u.user_id
                 WHERE a.article_id = ?";
     }
 
+<<<<<<< HEAD
     public static function addView(): string
     {
         return "INSERT INTO views (article_id, user_id) VALUES (?, ?)";
     }
 
+=======
+>>>>>>> d782790 (light and dark mode update)
     public static function getContent(): string
     {
         return "SELECT content FROM article_contents WHERE article_id = ?";
@@ -50,12 +57,16 @@ class ArticleQueries
 
     public static function getMedia(): string
     {
+<<<<<<< HEAD
         return "SELECT media_id, media_url, size_class, align_class, caption FROM article_media WHERE article_id = ? AND media_type = 'image' ORDER BY media_id ASC";
     }
 
     public static function incrementViews(): string
     {
         return "UPDATE articles SET views = views + 1 WHERE article_id = ?";
+=======
+        return "SELECT media_url FROM article_media WHERE article_id = ? AND media_type = 'image' ORDER BY media_id ASC";
+>>>>>>> d782790 (light and dark mode update)
     }
 
     public static function countPublishedArticles(): string
@@ -72,6 +83,7 @@ class ArticleQueries
     {
         return "SELECT article_id, title, status, created_at FROM articles WHERE user_id = ? ORDER BY created_at DESC";
     }
+<<<<<<< HEAD
 
     public static function searchArticles(): string
     {
@@ -148,4 +160,6 @@ class ArticleQueries
     {
         return "DELETE FROM article_media WHERE media_id = ? AND article_id = ? AND media_type='image'";
     }
+=======
+>>>>>>> d782790 (light and dark mode update)
 }

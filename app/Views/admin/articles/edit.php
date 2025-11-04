@@ -22,6 +22,7 @@
     </div>
     <?php if (!empty($images)): ?>
     <div class="mb-3">
+<<<<<<< HEAD
         <label class="form-label">Ảnh hiện có</label>
         <div class="row g-3">
             <?php foreach ($images as $img): ?>
@@ -79,10 +80,17 @@
                         <label class="form-check-label small" for="del<?= (int)($img['media_id'] ?? 0) ?>">Xóa ảnh này</label>
                     </div>
                 </div>
+=======
+        <label class="form-label">Current Images</label>
+        <div class="row g-2">
+            <?php foreach ($images as $img): ?>
+                <div class="col-6 col-md-3"><img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" style="width:100%;border-radius:6px"></div>
+>>>>>>> d782790 (light and dark mode update)
             <?php endforeach; ?>
         </div>
     </div>
     <?php endif; ?>
+<<<<<<< HEAD
 
     <button class="btn btn-primary">Update</button>
 </form>
@@ -137,3 +145,11 @@
   });
 })();
 </script>
+=======
+    <div class="mb-3">
+        <label class="form-label">Add Images</label>
+        <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
+    </div>
+    <button class="btn btn-primary">Update</button>
+</form>
+>>>>>>> d782790 (light and dark mode update)

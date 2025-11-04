@@ -40,6 +40,7 @@ class ArticleModel extends BaseModel
         return [$rows, $total];
     }
 
+<<<<<<< HEAD
     public function incrementViews(int $id): bool
     {
         $sql = ArticleQueries::incrementViews();
@@ -54,6 +55,8 @@ class ArticleModel extends BaseModel
         return $stmt->execute([$articleId, $userId]);
     }
 
+=======
+>>>>>>> d782790 (light and dark mode update)
     public function getByIdWithDetails(int $id): ?array
     {
         $sql = ArticleQueries::getByIdWithDetails();
@@ -94,6 +97,7 @@ class ArticleModel extends BaseModel
 
         return [$articles, $total];
     }
+<<<<<<< HEAD
 
     public function searchArticles(string $keyword, int $page, int $perPage): array
     {
@@ -115,6 +119,8 @@ class ArticleModel extends BaseModel
 
         return [$articles, $total];
     }
+=======
+>>>>>>> d782790 (light and dark mode update)
 }
 
 

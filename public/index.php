@@ -8,7 +8,10 @@ require_once __DIR__ . '/../app/Queries/ArticleQueries.php';
 require_once __DIR__ . '/../app/Queries/CategoryQueries.php';
 require_once __DIR__ . '/../app/Queries/CommentQueries.php';
 require_once __DIR__ . '/../app/Queries/UserQueries.php';
+<<<<<<< HEAD
 require_once __DIR__ . '/../app/Queries/AdminQueries.php';
+=======
+>>>>>>> d782790 (light and dark mode update)
 require_once __DIR__ . '/../app/Models/BaseModel.php';
 require_once __DIR__ . '/../app/Models/ArticleModel.php';
 require_once __DIR__ . '/../app/Models/CategoryModel.php';

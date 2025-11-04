@@ -5,7 +5,10 @@ use App\Core\Controller;
 use App\Models\ArticleModel;
 use App\Models\CommentModel;
 use App\Core\Database;
+<<<<<<< HEAD
 use App\Queries\AdminQueries;
+=======
+>>>>>>> d782790 (light and dark mode update)
 
 class ApiController extends Controller
 {
@@ -58,7 +61,11 @@ class ApiController extends Controller
             return;
         }
         $pdo = Database::getConnection();
+<<<<<<< HEAD
         $stmt = $pdo->prepare(AdminQueries::toggleLike());
+=======
+        $stmt = $pdo->prepare("CALL sp_toggle_like(?, ?)");
+>>>>>>> d782790 (light and dark mode update)
         $stmt->execute([$articleId, (int)$_SESSION['user_id']]);
         $this->json(['message' => 'ok']);
     }

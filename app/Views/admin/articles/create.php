@@ -23,6 +23,7 @@
     <div class="mb-3">
         <label class="form-label">Images</label>
         <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
+<<<<<<< HEAD
         <div id="image-options" class="row g-3 mt-2"></div>
     </div>
     <button class="btn btn-primary">Save</button>
@@ -78,3 +79,8 @@
   });
 })();
 </script>
+=======
+    </div>
+    <button class="btn btn-primary">Save</button>
+</form>
+>>>>>>> d782790 (light and dark mode update)

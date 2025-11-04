@@ -1,0 +1,18 @@
+[33m6f6ab5c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlight-and-dark-mode-v2[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #7 from bimmerM5/thêm-view-count-&-upload-nhiều-ảnh
+[33m59bb3ca[m Merge pull request #8 from bimmerM5/image-resizing-and-subtext
+[33mcd90f01[m[33m ([m[1;31morigin/image-resizing-and-subtext[m[33m)[m modified readme
+[33mbb7e0dc[m added image resizing and subtitles along with image deletion
+[33m82d78d4[m[33m ([m[1;31morigin/thêm-view-count-&-upload-nhiều-ảnh[m[33m)[m view count added
+[33m0ea5fe5[m added view count
+[33md202b8b[m change Sign up information
+[33mb7cf3a4[m update Queries
+[33m79e121b[m fix thumbnail pic
+[33m2db4246[m feat(model): refactor ArticleModel to use separate SQL query class
+[33m458e9f8[m Merge pull request #6 from bimmerM5/create-model
+[33me6d87e9[m Merge branch 'main' into create-model
+[33m4ee1740[m Merge pull request #5 from bimmerM5/add-thumbnail-pics
+[33m02d65c4[m[33m ([m[1;31morigin/add-thumbnail-pics[m[33m)[m add thumbnail pics
+[33maac0c5d[m tạo lớp model
+[33mb9de5bf[m Add database export file
+[33me6671b2[m Fist commit - add project files
+[33mab322ac[m Initial commit

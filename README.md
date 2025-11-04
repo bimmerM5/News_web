@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # News Web
 
 Một cổng thông tin nhỏ theo phong cách MVC viết bằng PHP thuần, PDO và MySQL/MariaDB. Dự án hỗ trợ đăng nhập/đăng ký, danh mục, CRUD bài viết, upload ảnh với tùy chọn hiển thị cho từng ảnh, tìm kiếm và JSON API gọn nhẹ.
@@ -187,3 +188,7 @@ DELETE FROM article_media WHERE media_id = 0 AND article_id = 8 LIMIT 1;
 
 ---
 Chúc bạn phát triển vui vẻ! Cần mở rộng (tags, WYSIWYG, phân trang, REST auth) cứ mở issue/trao đổi thêm.
+=======
+# News_web
+Đồ án phát triển Web
+>>>>>>> d782790 (light and dark mode update)
