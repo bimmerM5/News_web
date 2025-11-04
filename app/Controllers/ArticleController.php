@@ -17,6 +17,11 @@ class ArticleController extends Controller
             echo 'Article not found';
             return;
         }
+        
+        // Ghi lại lượt xem
+        $userId = $_SESSION['user_id'] ?? null;
+        $articleModel->addView($id, $userId);
+        
         $comments = (new CommentModel())->listForArticle($id);
         $this->view('article/show', [
             'article' => $details['article'],
