@@ -84,7 +84,7 @@ class ArticleQueries
                         LIMIT 1) AS thumb
                 FROM articles a
                 WHERE a.status='published' 
-                  AND (a.title LIKE :kw OR a.summary LIKE :kw)
+                  AND (a.title LIKE :kw1 OR a.summary LIKE :kw2)
                 ORDER BY a.created_at DESC
                 LIMIT :per OFFSET :off";
     }
@@ -94,7 +94,7 @@ class ArticleQueries
         return "SELECT COUNT(*) 
                 FROM articles 
                 WHERE status='published' 
-                  AND (title LIKE :kw OR summary LIKE :kw)";
+                  AND (title LIKE :kw1 OR summary LIKE :kw2)";
     }
 
     public static function getAllArticlesForAdmin(): string
