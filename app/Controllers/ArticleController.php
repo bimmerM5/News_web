@@ -10,25 +10,26 @@ class ArticleController extends Controller
 {
     public function show(int $id): void
     {
-        $model = new ArticleModel();
-        $row   = $model->getByIdWithDetails($id);
-
-        if (!$row) {
+        $articleModel = new ArticleModel();
+        $details = $articleModel->getByIdWithDetails($id);
+        if (!$details) {
             http_response_code(404);
-            // Có thể render view 404 riêng nếu bạn có
-            echo "<h2>Bài viết không tồn tại hoặc đã bị gỡ.</h2>";
+            echo 'Article not found';
             return;
         }
-
-        // Chuẩn hóa dữ liệu để view cũ dùng được
+        
+        // Ghi lại lượt xem
+        $userId = $_SESSION['user_id'] ?? null;
+        $articleModel->addView($id, $userId);
+        
+        $comments = (new CommentModel())->listForArticle($id);
         $this->view('article/show', [
-            'article' => $row,                    // toàn bộ cột của articles + category_name
-            'images'  => $row['media'] ?? [],     // danh sách ảnh/ media
-            // Nếu DB không có cột content thì dùng summary làm nội dung để tránh null
-            'content' => $row['content'] ?? ($row['summary'] ?? ''),
+            'article' => $details['article'],
+            'comments' => $comments,
+            'articleContent' => $details['content'],
+            'images' => $details['images']
         ]);
     }
-
 
     public function category(int $id): void
     {

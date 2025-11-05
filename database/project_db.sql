@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 19, 2025 lúc 07:30 AM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Nov 05, 2025 at 02:12 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,12 +18,12 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `news_portal`
+-- Database: `news_portal`
 --
 
 DELIMITER $$
 --
--- Thủ tục
+-- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_testdata` ()   BEGIN
     INSERT INTO categories (category_id, category_name, description) VALUES
@@ -185,7 +185,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `articles`
+-- Table structure for table `articles`
 --
 
 CREATE TABLE `articles` (
@@ -200,7 +200,7 @@ CREATE TABLE `articles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `articles`
+-- Dumping data for table `articles`
 --
 
 INSERT INTO `articles` (`article_id`, `user_id`, `category_id`, `title`, `summary`, `status`, `created_at`, `updated_at`) VALUES
@@ -213,12 +213,13 @@ INSERT INTO `articles` (`article_id`, `user_id`, `category_id`, `title`, `summar
 (10, 1, 3, 'Manchester City nghiền nát Man United trong derby Manchester (3-0)', 'Manchester United tiếp tục chìm sâu trong khủng hoảng phong độ sau trận thua 0-3 trước Manchester City, với Erling Haaland lập cú đúp. Đây là trận đấu cho thấy những vấn đề nghiêm trọng nơi hàng thủ và khả năng kết liễu trận đấu của Quỷ đỏ.', 'published', '2025-09-19 00:50:07', '2025-09-19 00:55:51'),
 (11, 1, 2, 'Tác động lâu dài của COVID-19 lên tim mạch được cảnh báo trong báo cáo mới', 'Một báo cáo mới cho thấy COVID-19 và hậu COVID đang để lại hậu quả nghiêm trọng cho sức khỏe tim mạch của hàng triệu người trên thế giới, khiến nguy cơ bệnh tim mạch gia tăng. Các chuyên gia kêu gọi sàng lọc sớm và biện pháp phòng ngừa hiệu quả.', 'published', '2025-09-19 00:51:41', '2025-09-19 00:55:53'),
 (12, 1, 3, 'Liverpool thắng nghẹt thở Atletico Madrid 3-2 nhờ bàn thắng muộn của Van Dijk', 'Liverpool mở màn chiến dịch Champions League đầy kịch tính khi đánh bại Atletico Madrid 3-2 ngay tại Anfield. Hai bàn thắng sớm của Robertson và Salah giúp chủ nhà dẫn trước, Atletico gỡ hòa nhờ đôi pha của Marcos Llorente, nhưng Virgil van Dijk đã lên tiếng bằng pha đánh đầu ở phút bù giờ để mang về ba điểm.', 'published', '2025-09-19 00:54:02', '2025-09-19 00:55:48'),
-(13, 1, 1, 'Meta ra mắt kính thông minh “Ray-Ban Display” đánh dấu bước tiến mới trong AR', 'Meta vừa giới thiệu mẫu kính thông minh Ray-Ban Display tích hợp màn hình hiển thị để hỗ trợ thông báo, định vị, xem video và điều khiển bằng giọng nói. Đây là một trong những sản phẩm AR (thực tế tăng cường) được kỳ vọng sẽ giúp đưa kính thông minh từ “công nghệ thí điểm” lên thị trường đại chúng.', 'published', '2025-09-19 00:55:34', '2025-09-19 00:55:46');
+(13, 1, 1, 'Meta ra mắt kính thông minh “Ray-Ban Display” đánh dấu bước tiến mới trong AR', 'Meta vừa giới thiệu mẫu kính thông minh Ray-Ban Display tích hợp màn hình hiển thị để hỗ trợ thông báo, định vị, xem video và điều khiển bằng giọng nói. Đây là một trong những sản phẩm AR (thực tế tăng cường) được kỳ vọng sẽ giúp đưa kính thông minh từ “công nghệ thí điểm” lên thị trường đại chúng.', 'published', '2025-09-19 00:55:34', '2025-09-19 00:55:46'),
+(29, 1, 2, 'hehe', 'hehe', 'published', '2025-11-04 18:06:08', '2025-11-04 18:06:12');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `article_contents`
+-- Table structure for table `article_contents`
 --
 
 CREATE TABLE `article_contents` (
@@ -228,7 +229,7 @@ CREATE TABLE `article_contents` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `article_contents`
+-- Dumping data for table `article_contents`
 --
 
 INSERT INTO `article_contents` (`content_id`, `article_id`, `content`) VALUES
@@ -241,35 +242,41 @@ INSERT INTO `article_contents` (`content_id`, `article_id`, `content`) VALUES
 (10, 10, 'Trong trận derby Manchester tại Premier League ngày chủ nhật vừa qua, Manchester United đã bị Manchester City áp đảo từ đầu đến cuối, để thua 0-3.\r\nErling Haaland một lần nữa khẳng định bản năng sát thủ của mình với cú đúp trong hiệp hai, ở các phút 53 và 68. Phil Foden cũng có tên trên bảng tỷ số sau pha phối hợp đẹp mắt, nâng tỉ số lên 3-0.\r\nMan United chịu nhiều chỉ trích ở khâu phòng ngự: để đối phương dễ dàng áp đảo và tạo ra nhiều tình huống nguy hiểm bên trong vòng cấm.  Bên cạnh đó, những cơ hội có được ở phần sân đối thủ lại không được tận dụng hiệu quả, khiến đội bóng không thể ghi bàn danh dự.'),
 (11, 11, 'Theo báo cáo xuất bản gần đây, những người từng nhiễm SARS-CoV-2 có nguy cơ phát triển các vấn đề tim mạch cao hơn so với người chưa nhiễm.\r\nCác triệu chứng có thể bao gồm viêm cơ tim, rối loạn nhịp tim, suy tim nhẹ, hoặc các dấu hiệu tổn thương mạch máu. Một trong những nguyên nhân được đề cập là phản ứng viêm kéo dài do virus để lại, cũng như các tổn thương mạch nhỏ (endothelial) do thiếu oxy hoặc do hệ miễn dịch hoạt động mạnh.\r\nBên cạnh đó, chính quyền và các tổ chức y tế quốc tế khuyến nghị:\r\n\r\nCác bệnh nhân hậu COVID nên được theo dõi sức khỏe tim mạch sau khoảng từ vài tuần đến vài tháng kể từ khi khỏi bệnh, đặc biệt nếu có triệu chứng như đau ngực, khó thở, mệt mỏi bất thường.\r\n\r\nTiêm chủng phòng COVID tiếp tục là biện pháp quan trọng để giảm mức độ nghiêm trọng của bệnh và nguy cơ hậu COVID.\r\n\r\nThay đổi lối sống: dinh dưỡng cân bằng, hoạt động thể chất, kiểm soát huyết áp và mỡ máu.'),
 (12, 12, 'Liverpool khởi đầu trận đấu với phong độ đầy tự tin tại Anfield, khi Andy Robertson mở tỉ số ở phút 4 từ pha đá phạt của Mohamed Salah bị chạm chân rồi đổi hướng. Chỉ hai phút sau, Salah nhân đôi cách biệt với một pha phối hợp nhanh và cú dứt điểm lạnh lùng vào góc xa khung thành Atletico.\r\nTuy nhiên, Atletico không để Liverpool dễ dàng áp đặt thế trận. Trước khi hiệp một kết thúc, Marcos Llorente rút ngắn tỉ số với một cú xoạc chân nhẹ nhàng qua chân Ibrahima Konaté và thủ thành Alisson từ đường chuyền bên cánh.\r\nHiệp hai tiếp tục với những pha hãm thành liên tục từ Liverpool, nhưng Atletico đã có bàn gỡ hòa vào khoảng phút 81, tiếp tục là Llorente với một pha volley ngoài vòng cấm, bóng đập người Alexis Mac Allister đổi hướng khiến thủ môn Alisson bó tay.\r\nKhi trận đấu tưởng chừng như sẽ kết thúc với tỉ số hòa, Dominik Szoboszlai treo bóng từ phạt góc ở phút bù giờ (90+2), và Virgil van Dijk đánh đầu chính xác để ấn định chiến thắng nghẹt thở cho Liverpool.\r\nMột chi tiết đáng chú ý: Diego Simeone bị truất quyền chỉ đạo ngay sau bàn thắng cuối cùng sau một tình huống tranh cãi với khán giả.'),
-(13, 13, 'Trong một động thái mới nhất trong cuộc đua thiết bị AR/VR, Meta vừa cho ra mắt mẫu kính thông minh Ray-Ban Display với thiết kế thời trang hơn, lấy cảm hứng từ dòng Ray-Ban nổi tiếng. Sản phẩm cho phép người dùng hiển thị các thông báo, bản đồ dẫn đường, xem video ngắn, và điều khiển qua giọng nói, hướng tới việc sử dụng thực tế trong đời sống hàng ngày thay vì chỉ làm công nghệ trình diễn.\r\nMột số đặc điểm nổi bật của Ray-Ban Display:\r\n\r\nThiết kế nhẹ, mẫu kính giống kính thời trang để giảm cảm giác “máy móc”.\r\nHỗ trợ màn hình nhỏ tích hợp bên trong kính, để hiển thị thông tin cơ bản như thông báo, hướng dẫn, video.\r\nCó điều khiển bằng giọng nói, giúp tương tác rảnh tay.\r\nGiá bán khá cao, khoảng $799, và có những hạn chế như thời lượng pin chưa tốt, phụ thuộc vào điện thoại cho một số tính năng.\r\nNgoài ra, sản phẩm này còn được xem là “bước khởi đầu” cho một thế hệ kính thông minh AR/AI có tính ứng dụng cao hơn. Các đối thủ lớn như Google, Apple, Snap cũng được cho là đang phát triển các mẫu tương tự sẽ ra mắt trong khoảng 2025-2026.');
+(13, 13, 'Trong một động thái mới nhất trong cuộc đua thiết bị AR/VR, Meta vừa cho ra mắt mẫu kính thông minh Ray-Ban Display với thiết kế thời trang hơn, lấy cảm hứng từ dòng Ray-Ban nổi tiếng. Sản phẩm cho phép người dùng hiển thị các thông báo, bản đồ dẫn đường, xem video ngắn, và điều khiển qua giọng nói, hướng tới việc sử dụng thực tế trong đời sống hàng ngày thay vì chỉ làm công nghệ trình diễn.\r\nMột số đặc điểm nổi bật của Ray-Ban Display:\r\n\r\nThiết kế nhẹ, mẫu kính giống kính thời trang để giảm cảm giác “máy móc”.\r\nHỗ trợ màn hình nhỏ tích hợp bên trong kính, để hiển thị thông tin cơ bản như thông báo, hướng dẫn, video.\r\nCó điều khiển bằng giọng nói, giúp tương tác rảnh tay.\r\nGiá bán khá cao, khoảng $799, và có những hạn chế như thời lượng pin chưa tốt, phụ thuộc vào điện thoại cho một số tính năng.\r\nNgoài ra, sản phẩm này còn được xem là “bước khởi đầu” cho một thế hệ kính thông minh AR/AI có tính ứng dụng cao hơn. Các đối thủ lớn như Google, Apple, Snap cũng được cho là đang phát triển các mẫu tương tự sẽ ra mắt trong khoảng 2025-2026.'),
+(29, 29, 'hehe');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `article_media`
+-- Table structure for table `article_media`
 --
 
 CREATE TABLE `article_media` (
   `media_id` int(11) NOT NULL,
   `article_id` int(11) NOT NULL,
   `media_url` varchar(255) NOT NULL,
-  `media_type` enum('image','video') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `media_type` enum('image','video') NOT NULL,
+  `caption` varchar(255) DEFAULT NULL,
+  `size_class` varchar(20) DEFAULT 'img-medium',
+  `align_class` varchar(20) DEFAULT 'img-center'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `article_media`
+-- Dumping data for table `article_media`
 --
 
-INSERT INTO `article_media` (`media_id`, `article_id`, `media_url`, `media_type`) VALUES
-(2, 7, 'uploads/img_20250918_184112_89a5d796.png', 'image'),
-(3, 7, 'uploads/img_20250918_184349_1d5a022b.png', 'image'),
-(4, 8, 'uploads/img_20250918_192959_cfe1f10b.png', 'image'),
-(5, 12, 'uploads/img_20250918_201406_80a17e21.png', 'image');
+INSERT INTO `article_media` (`media_id`, `article_id`, `media_url`, `media_type`, `caption`, `size_class`, `align_class`) VALUES
+(2, 7, 'uploads/img_20250918_184112_89a5d796.png', 'image', NULL, 'img-medium', 'img-center'),
+(3, 7, 'uploads/img_20250918_184349_1d5a022b.png', 'image', NULL, 'img-medium', 'img-center'),
+(5, 12, 'uploads/img_20250918_201406_80a17e21.png', 'image', 'hehe', 'img-medium', 'img-center'),
+(0, 29, 'uploads/img_20251104_120608_e62ae775.jpg', 'image', 'meo may be', 'img-medium', 'img-center'),
+(0, 13, 'uploads/img_20251104_124235_28d80c47.png', 'image', 'Kính rayban mới. Nguồn: Google', 'img-medium', 'img-center'),
+(0, 8, 'uploads/img_20251104_125357_2181bd91.png', 'image', 'Tổng Thống Zelinsky và Putin', 'img-large', 'img-center');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `article_tags`
+-- Table structure for table `article_tags`
 --
 
 CREATE TABLE `article_tags` (
@@ -280,7 +287,7 @@ CREATE TABLE `article_tags` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `categories`
+-- Table structure for table `categories`
 --
 
 CREATE TABLE `categories` (
@@ -290,7 +297,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `categories`
+-- Dumping data for table `categories`
 --
 
 INSERT INTO `categories` (`category_id`, `category_name`, `description`) VALUES
@@ -302,7 +309,7 @@ INSERT INTO `categories` (`category_id`, `category_name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `comments`
+-- Table structure for table `comments`
 --
 
 CREATE TABLE `comments` (
@@ -314,7 +321,7 @@ CREATE TABLE `comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `comments`
+-- Dumping data for table `comments`
 --
 
 INSERT INTO `comments` (`comment_id`, `article_id`, `user_id`, `content`, `created_at`) VALUES
@@ -322,7 +329,7 @@ INSERT INTO `comments` (`comment_id`, `article_id`, `user_id`, `content`, `creat
 (2, 7, 1, 'tuyệt vời', '2025-09-18 23:44:15');
 
 --
--- Bẫy `comments`
+-- Triggers `comments`
 --
 DELIMITER $$
 CREATE TRIGGER `trg_after_insert_comment` AFTER INSERT ON `comments` FOR EACH ROW BEGIN
@@ -334,7 +341,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `comment_logs`
+-- Table structure for table `comment_logs`
 --
 
 CREATE TABLE `comment_logs` (
@@ -345,7 +352,7 @@ CREATE TABLE `comment_logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `comment_logs`
+-- Dumping data for table `comment_logs`
 --
 
 INSERT INTO `comment_logs` (`log_id`, `comment_id`, `action`, `log_time`) VALUES
@@ -355,7 +362,7 @@ INSERT INTO `comment_logs` (`log_id`, `comment_id`, `action`, `log_time`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `likes`
+-- Table structure for table `likes`
 --
 
 CREATE TABLE `likes` (
@@ -368,7 +375,7 @@ CREATE TABLE `likes` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `roles`
+-- Table structure for table `roles`
 --
 
 CREATE TABLE `roles` (
@@ -377,7 +384,7 @@ CREATE TABLE `roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `roles`
+-- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`role_id`, `role_name`) VALUES
@@ -386,7 +393,7 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `tags`
+-- Table structure for table `tags`
 --
 
 CREATE TABLE `tags` (
@@ -397,7 +404,7 @@ CREATE TABLE `tags` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -411,7 +418,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `created_at`, `updated_at`, `role_id`) VALUES
@@ -422,7 +429,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `created_a
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `user_profiles`
+-- Table structure for table `user_profiles`
 --
 
 CREATE TABLE `user_profiles` (
@@ -434,7 +441,7 @@ CREATE TABLE `user_profiles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `user_profiles`
+-- Dumping data for table `user_profiles`
 --
 
 INSERT INTO `user_profiles` (`profile_id`, `user_id`, `full_name`, `avatar_url`, `bio`) VALUES
@@ -445,7 +452,7 @@ INSERT INTO `user_profiles` (`profile_id`, `user_id`, `full_name`, `avatar_url`,
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `user_roles`
+-- Table structure for table `user_roles`
 --
 
 CREATE TABLE `user_roles` (
@@ -454,7 +461,7 @@ CREATE TABLE `user_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `user_roles`
+-- Dumping data for table `user_roles`
 --
 
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
@@ -463,7 +470,7 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `views`
+-- Table structure for table `views`
 --
 
 CREATE TABLE `views` (
@@ -474,11 +481,47 @@ CREATE TABLE `views` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Dumping data for table `views`
+--
+
+INSERT INTO `views` (`view_id`, `article_id`, `user_id`, `view_time`) VALUES
+(1, 12, NULL, '2025-11-01 23:34:13'),
+(2, 12, 1, '2025-11-01 23:34:23'),
+(3, 12, 1, '2025-11-01 23:34:26'),
+(4, 12, 1, '2025-11-01 23:34:29'),
+(5, 12, 1, '2025-11-01 23:34:54'),
+(6, 12, 1, '2025-11-01 23:39:57'),
+(7, 13, 1, '2025-11-02 00:05:37'),
+(8, 13, 1, '2025-11-02 00:05:40'),
+(9, 12, 1, '2025-11-02 00:05:43'),
+(10, 13, 1, '2025-11-02 00:16:27'),
+(11, 12, 1, '2025-11-02 00:16:30'),
+(12, 8, 1, '2025-11-02 00:16:35'),
+(13, 12, 1, '2025-11-02 00:40:55'),
+(14, 12, 1, '2025-11-02 00:44:26'),
+(21, 13, 1, '2025-11-02 01:17:33'),
+(22, 12, 1, '2025-11-02 01:17:40'),
+(26, 12, 1, '2025-11-03 10:21:58'),
+(27, 13, 1, '2025-11-03 10:33:16'),
+(28, 12, 1, '2025-11-03 10:36:58'),
+(30, 8, 1, '2025-11-03 10:37:14'),
+(31, 29, 1, '2025-11-05 15:03:41'),
+(32, 29, 1, '2025-11-05 15:03:46'),
+(33, 29, 1, '2025-11-05 15:03:47'),
+(34, 29, 1, '2025-11-05 15:03:49'),
+(35, 29, 1, '2025-11-05 15:03:50'),
+(36, 13, 1, '2025-11-05 15:03:53'),
+(37, 13, 1, '2025-11-05 15:04:32'),
+(38, 13, 1, '2025-11-05 15:04:36'),
+(39, 29, 1, '2025-11-05 15:04:40'),
+(40, 13, 1, '2025-11-05 19:10:41');
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `articles`
+-- Indexes for table `articles`
 --
 ALTER TABLE `articles`
   ADD PRIMARY KEY (`article_id`),
@@ -486,34 +529,27 @@ ALTER TABLE `articles`
   ADD KEY `category_id` (`category_id`);
 
 --
--- Chỉ mục cho bảng `article_contents`
+-- Indexes for table `article_contents`
 --
 ALTER TABLE `article_contents`
   ADD PRIMARY KEY (`content_id`),
   ADD KEY `article_id` (`article_id`);
 
 --
--- Chỉ mục cho bảng `article_media`
---
-ALTER TABLE `article_media`
-  ADD PRIMARY KEY (`media_id`),
-  ADD KEY `article_id` (`article_id`);
-
---
--- Chỉ mục cho bảng `article_tags`
+-- Indexes for table `article_tags`
 --
 ALTER TABLE `article_tags`
   ADD PRIMARY KEY (`article_id`,`tag_id`),
   ADD KEY `tag_id` (`tag_id`);
 
 --
--- Chỉ mục cho bảng `categories`
+-- Indexes for table `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Chỉ mục cho bảng `comments`
+-- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`comment_id`),
@@ -521,14 +557,14 @@ ALTER TABLE `comments`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `comment_logs`
+-- Indexes for table `comment_logs`
 --
 ALTER TABLE `comment_logs`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `comment_id` (`comment_id`);
 
 --
--- Chỉ mục cho bảng `likes`
+-- Indexes for table `likes`
 --
 ALTER TABLE `likes`
   ADD PRIMARY KEY (`like_id`),
@@ -536,21 +572,21 @@ ALTER TABLE `likes`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `roles`
+-- Indexes for table `roles`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`role_id`),
   ADD UNIQUE KEY `role_name` (`role_name`);
 
 --
--- Chỉ mục cho bảng `tags`
+-- Indexes for table `tags`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`tag_id`),
   ADD UNIQUE KEY `tag_name` (`tag_name`);
 
 --
--- Chỉ mục cho bảng `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
@@ -559,21 +595,21 @@ ALTER TABLE `users`
   ADD KEY `fk_users_roles` (`role_id`);
 
 --
--- Chỉ mục cho bảng `user_profiles`
+-- Indexes for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
   ADD PRIMARY KEY (`profile_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `user_roles`
+-- Indexes for table `user_roles`
 --
 ALTER TABLE `user_roles`
   ADD PRIMARY KEY (`user_id`,`role_id`),
   ADD KEY `role_id` (`role_id`);
 
 --
--- Chỉ mục cho bảng `views`
+-- Indexes for table `views`
 --
 ALTER TABLE `views`
   ADD PRIMARY KEY (`view_id`),
@@ -581,152 +617,140 @@ ALTER TABLE `views`
   ADD KEY `user_id` (`user_id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `articles`
+-- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT cho bảng `article_contents`
+-- AUTO_INCREMENT for table `article_contents`
 --
 ALTER TABLE `article_contents`
-  MODIFY `content_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `content_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT cho bảng `article_media`
---
-ALTER TABLE `article_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT cho bảng `categories`
+-- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `comments`
+-- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
   MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `comment_logs`
+-- AUTO_INCREMENT for table `comment_logs`
 --
 ALTER TABLE `comment_logs`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `likes`
+-- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
   MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `roles`
+-- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `tags`
+-- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
   MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `user_profiles`
+-- AUTO_INCREMENT for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
   MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `views`
+-- AUTO_INCREMENT for table `views`
 --
 ALTER TABLE `views`
-  MODIFY `view_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `view_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `articles`
+-- Constraints for table `articles`
 --
 ALTER TABLE `articles`
   ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `articles_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `article_contents`
+-- Constraints for table `article_contents`
 --
 ALTER TABLE `article_contents`
   ADD CONSTRAINT `article_contents_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `article_media`
---
-ALTER TABLE `article_media`
-  ADD CONSTRAINT `article_media_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE;
-
---
--- Các ràng buộc cho bảng `article_tags`
+-- Constraints for table `article_tags`
 --
 ALTER TABLE `article_tags`
   ADD CONSTRAINT `article_tags_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `article_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `comments`
+-- Constraints for table `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `comment_logs`
+-- Constraints for table `comment_logs`
 --
 ALTER TABLE `comment_logs`
   ADD CONSTRAINT `comment_logs_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`comment_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `likes`
+-- Constraints for table `likes`
 --
 ALTER TABLE `likes`
   ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `users`
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 
 --
--- Các ràng buộc cho bảng `user_profiles`
+-- Constraints for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
   ADD CONSTRAINT `user_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `user_roles`
+-- Constraints for table `user_roles`
 --
 ALTER TABLE `user_roles`
   ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `views`
+-- Constraints for table `views`
 --
 ALTER TABLE `views`
   ADD CONSTRAINT `views_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`) ON DELETE CASCADE,
@@ -734,7 +758,7 @@ ALTER TABLE `views`
 
 DELIMITER $$
 --
--- Sự kiện
+-- Events
 --
 CREATE DEFINER=`root`@`localhost` EVENT `ev_clean_old_data` ON SCHEDULE EVERY 1 DAY STARTS '2025-09-18 15:32:25' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
     DELETE FROM views
