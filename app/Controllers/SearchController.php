@@ -17,10 +17,6 @@ class SearchController extends Controller
 
         if ($q !== '') {
             $articleModel = new ArticleModel();
-<<<<<<< HEAD
-            [$articles, $total] = $articleModel->searchArticles($q, $page, $per);
-            $pages = (int)ceil($total / $per);
-=======
             $pdo = $articleModel->pdo;
 
             $offset = ($page - 1) * $per;
@@ -57,7 +53,6 @@ class SearchController extends Controller
             $cnt->execute();
 
             $pages = (int)ceil(((int)$cnt->fetchColumn()) / $per);
->>>>>>> d782790 (light and dark mode update)
         }
 
         $this->view('search/index', [

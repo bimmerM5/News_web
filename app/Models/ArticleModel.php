@@ -40,23 +40,6 @@ class ArticleModel extends BaseModel
         return [$rows, $total];
     }
 
-<<<<<<< HEAD
-    public function incrementViews(int $id): bool
-    {
-        $sql = ArticleQueries::incrementViews();
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$id]);
-    }
-
-    public function addView(int $articleId, ?int $userId = null): bool
-    {
-        $sql = ArticleQueries::addView();
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$articleId, $userId]);
-    }
-
-=======
->>>>>>> d782790 (light and dark mode update)
     public function getByIdWithDetails(int $id): ?array
     {
         $sql = ArticleQueries::getByIdWithDetails();
@@ -97,30 +80,6 @@ class ArticleModel extends BaseModel
 
         return [$articles, $total];
     }
-<<<<<<< HEAD
-
-    public function searchArticles(string $keyword, int $page, int $perPage): array
-    {
-        $offset = ($page - 1) * $perPage;
-        
-        $sql = ArticleQueries::searchArticles();
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':kw', '%' . $keyword . '%');
-        $stmt->bindValue(':per', $perPage, \PDO::PARAM_INT);
-        $stmt->bindValue(':off', $offset, \PDO::PARAM_INT);
-        $stmt->execute();
-        $articles = $stmt->fetchAll();
-
-        $cntSql = ArticleQueries::countSearchResults();
-        $cnt = $this->pdo->prepare($cntSql);
-        $cnt->bindValue(':kw', '%' . $keyword . '%');
-        $cnt->execute();
-        $total = (int)$cnt->fetchColumn();
-
-        return [$articles, $total];
-    }
-=======
->>>>>>> d782790 (light and dark mode update)
 }
 
 

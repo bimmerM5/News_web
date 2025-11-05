@@ -45,15 +45,4 @@ class UserQueries
                 avatar_url = VALUES(avatar_url), 
                 bio = VALUES(bio)";
     }
-<<<<<<< HEAD
-
-    public static function checkAdminRole(): string
-    {
-        return "SELECT 1
-                FROM user_roles ur
-                JOIN roles r ON r.role_id = ur.role_id
-                WHERE ur.user_id = ? AND r.role_name = 'admin' LIMIT 1";
-    }
-=======
->>>>>>> d782790 (light and dark mode update)
 }
