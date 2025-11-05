@@ -1,5 +1,25 @@
 <?php
 session_start();
+// Simple PSR-4 autoloader (nếu bạn không dùng composer)
+spl_autoload_register(function ($class) {
+    $prefix  = 'App\\';
+    $baseDir = dirname(__DIR__) . '/app/';
+
+    // class không thuộc App\ thì bỏ qua
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+
+    // đổi namespace -> path
+    $relative = substr($class, $len);                // e.g. Models\ArticleModel
+    $file = $baseDir . str_replace('\\', '/', $relative) . '.php';
+
+    if (is_file($file)) {
+        require $file;
+    }
+});
+
 require_once __DIR__ . '/../app/Core/Router.php';
 require_once __DIR__ . '/../app/Core/Controller.php';
 require_once __DIR__ . '/../app/Core/Database.php';
