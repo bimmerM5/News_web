@@ -1,70 +1,202 @@
-/***** Global *****/
-:root{
-  --brand:#0d6efd;
-  --bg:#0b1220;
-  --card:#111827;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --accent:#22d3ee;
+/* 1. Light theme overrides (dark là mặc định trong style.css) */
+html[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #1d2430;
+  --card: #ffffff;
+  --border: #dee2e6;
+
+  --link: #0d6efd;
+  --link-hover: #0b5ed7;
+  --brand: #0d6efd;
+  --muted: #6b7280;
+
+  --heading-color: #1d2430; 
+  --label-color: #1d2430;   
 }
-body{
+
+/* 2. Dark theme overrides */
+html[data-theme="dark"] {
+  --bg: #0b1220;
+  --text: #e5e7eb;
+  --card: #111827;
+  --border: rgba(255,255,255,0.06);
+
+  --link: #66b2ff;
+  --link-hover: #8ac3ff;
+  --brand: #2d8cff;
+  --muted: #9ca3af;
+
+  --heading-color: #8ac3ff; 
+  --label-color: #ffffff;   
+}
+
+/* 3. Body & navbar nền theo theme */
+body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+html[data-theme="dark"] body {
   background: radial-gradient(1200px 800px at 10% -10%, rgba(34,211,238,.15), transparent 60%),
               radial-gradient(1200px 800px at 110% -10%, rgba(13,110,253,.15), transparent 60%),
-              #0b1220;
-  color: var(--text);
+              #0b1220 !important;
 }
-.navbar{
-  background: linear-gradient(90deg,#0b1220, #0d1325 30%, #0b1220);
-  border-bottom: 1px solid rgba(255,255,255,.06);
+.navbar {
+  background: var(--card) !important;
+  border-bottom: 1px solid var(--border) !important;
 }
-.navbar .navbar-brand{font-weight:700; letter-spacing:.2px}
-.navbar .nav-link{opacity:.85}
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: var(--text) !important;
+}
+.navbar .nav-link:hover {
+  color: var(--link-hover) !important;
+}
 
-.container{max-width:1140px}
+/* 4. Buttons text color theo theme */
+html[data-theme="dark"] .btn { color: #fff !important; }
+html[data-theme="light"] .btn { color: #000 !important; }
+.btn svg { fill: currentColor; }
 
-/* Cards */
-.card{
+/* 5. Card / list / modal / dropdown / table */
+.card,
+.list-group-item,
+.dropdown-menu,
+.modal-content,
+.offcanvas,
+.table,
+.table thead th {
   background: var(--card);
-  border: 1px solid rgba(255,255,255,.06);
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
   color: var(--text);
+  border-color: var(--border);
 }
-/* Article thumbnails */
-.article-thumb{display:block; width:100%; height:170px; object-fit:cover; border-top-left-radius:6px; border-top-right-radius:6px}
-.card .text-muted{color: var(--muted) !important}
-.card-title a{color:#fff; text-decoration:none}
-.card-title a:hover{color: var(--accent)}
-.badge-cat{background: rgba(34,211,238,.15); color: var(--accent); border:1px solid rgba(34,211,238,.35)}
 
-/* Article */
-.article-title{font-weight:800;}
-.article-meta{color: var(--muted)}
-.article-content{font-size:1.05rem; line-height:1.8}
-.article-content p{margin-bottom:1rem}
+/* 6. Form controls & label */
+.form-control, .form-select, .input-group-text {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+.form-control::placeholder { color: var(--muted); }
+.form-control:focus, .form-select:focus {
+  border-color: var(--link);
+  box-shadow: 0 0 0 .15rem rgba(13,110,253,.15);
+}
 
-/* Article images */
-.article-image{margin:1rem 0}
-.article-image img{display:block; width:100%; height:auto; border-radius:8px}
-.article-image figcaption{color:var(--muted); text-align:center; font-size:.9rem; margin-top:.35rem}
-.img-small{max-width:360px}
-.img-medium{max-width:680px}
-.img-large{max-width:100%}
-.img-center{margin-left:auto; margin-right:auto}
-.img-left{float:left; margin-right:1rem}
-.img-right{float:right; margin-left:1rem}
-.article-content::after{content:''; display:block; clear:both}
 
-/* Comments */
-.list-group-item{background: #0f172a; color: var(--text); border-color:#1f2937}
+label,
+.form-label,
+.filter-title,
+.category-title {
+  color: var(--label-color) !important;
+  opacity: 1 !important;
+  font-weight: 600;
+}
 
-/* Forms */
-.form-control, .form-select{background:#0f172a; color:#e5e7eb; border-color:#1f2937}
-.form-control:focus{border-color: var(--accent); box-shadow: 0 0 0 .2rem rgba(34,211,238,.15)}
+/* 7. Links */
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
 
-/* Buttons */
-.btn-primary{background: linear-gradient(135deg, var(--brand), #38bdf8); border:0}
-.btn-primary:hover{filter:brightness(1.05)}
-.btn-outline-light{border-color: rgba(229,231,235,.2)}
+/* 8. Article / Card title links (cùng font với heading, KHÔNG đậm) */
+.card-title a,
+.article-title a,
+.news-title a {
+  color: var(--link) !important;
+  font-family: var(--bs-heading-font-family, inherit);
+  font-weight: 400;           
+  letter-spacing: .2px;
+  text-decoration: none;
+}
+.card-title a:hover,
+.article-title a:hover,
+.news-title a:hover {
+  color: var(--link-hover) !important;
+}
 
-/* Utilities */
-.hero-title{background: linear-gradient(90deg,#fff, #93c5fd); -webkit-background-clip:text; background-clip:text; color:transparent}
+/* 9. Tiêu đề chính “Bài viết mới” */
+h1, h2 {
+  color: var(--heading-color) !important;
+  font-weight: 700 !important;
+  text-shadow: none !important; 
+  filter: none !important;
+  opacity: 1 !important;
+  -webkit-text-stroke: 0 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 10. Navbar toggler icon */
+html[data-theme="dark"] .navbar {
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.85)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+html[data-theme="light"] .navbar {
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0,0,0,0.7)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* 11. Date/Meta */
+.article-meta,
+.article-meta a,
+.meta,
+.meta a,
+time,
+.post-time,
+.post-date {
+  color: var(--link) !important;
+}
+.article-meta a:hover,
+.meta a:hover {
+  color: var(--link-hover) !important;
+}
+
+/* 12. Category tags */
+.badge-cat,
+.badge {
+  color: var(--link) !important;
+  border: 1px solid var(--link) !important;
+  background: transparent;
+}
+html[data-theme="dark"] .badge-cat,
+html[data-theme="dark"] .badge {
+  background: rgba(102,178,255,.12);
+}
+html[data-theme="light"] .badge-cat,
+html[data-theme="light"] .badge {
+  background: rgba(13,110,253,.08);
+}
+.badge-cat:hover,
+.badge:hover {
+  filter: brightness(1.03);
+}
+
+/* 13. Date/Meta */
+.card .text-muted,
+.card .text-muted *,
+.article-meta,
+.article-meta *,
+.meta,
+.meta *,
+.post-meta,
+.post-meta *,
+time,
+.post-time,
+.post-date {
+  color: var(--link) !important;         
+}
+.card .text-muted a:hover,
+.article-meta a:hover,
+.meta a:hover {
+  color: var(--link-hover) !important;   
+}
+
+/* 14. Đọc tiếp */
+html[data-theme] .btn.btn-primary,
+html[data-theme] .btn.btn-primary:hover,
+html[data-theme] .btn.btn-primary:focus,
+html[data-theme] .btn.btn-primary:active,
+html[data-theme] .btn-primary:disabled {
+  color: #fff !important;
+}
+
+
+html[data-theme] .btn.btn-primary * {
+  color: #fff !important;
+  fill: #fff !important; 
+}
