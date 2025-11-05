@@ -5,7 +5,6 @@ use App\Core\Controller;
 use App\Models\ArticleModel;
 use App\Models\CommentModel;
 use App\Core\Database;
-use App\Queries\AdminQueries;
 
 class ApiController extends Controller
 {
@@ -58,7 +57,7 @@ class ApiController extends Controller
             return;
         }
         $pdo = Database::getConnection();
-        $stmt = $pdo->prepare(AdminQueries::toggleLike());
+        $stmt = $pdo->prepare("CALL sp_toggle_like(?, ?)");
         $stmt->execute([$articleId, (int)$_SESSION['user_id']]);
         $this->json(['message' => 'ok']);
     }

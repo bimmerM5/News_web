@@ -9,31 +9,35 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        $page = max(1, (int)($_GET['page'] ?? 1));
-        $per = 9;
-        $catId = isset($_GET['cat']) ? (int)$_GET['cat'] : 0;
+        // input
+        $q     = isset($_GET['q']) ? trim((string)$_GET['q']) : '';
+        $page  = max(1, (int)($_GET['page'] ?? 1));
+        $per   = 9;
+        $catId = (int)($_GET['cat'] ?? 0);
+        $catId = $catId > 0 ? $catId : null;
 
-        // Lấy danh sách bài viết (nếu có bộ lọc theo category)
+        // data
         $articleModel = new ArticleModel();
-        [$articles, $total] = $articleModel->getPublishedArticles(
-            $page,
-            $per,
-            $catId > 0 ? $catId : null
-        );
+        if ($q !== '') {
+            // tìm theo tiêu đề/nội dung, vẫn hỗ trợ lọc danh mục và phân trang
+            [$articles, $total] = $articleModel->searchPublished($q, $page, $per, $catId);
+        } else {
+            [$articles, $total] = $articleModel->getPublishedArticles($page, $per, $catId);
+        }
+        $pages = max(1, (int)ceil($total / $per));
 
-        $pages = (int)ceil($total / $per);
-
-        // Lấy danh sách danh mục để hiển thị trong menu
         $categoryModel = new CategoryModel();
-        $categories = $categoryModel->listAll();
+        $categories    = $categoryModel->listAll();
 
-        // Gửi dữ liệu sang view
+        // view
         $this->view('home/index', [
-            'articles' => $articles,
-            'page' => $page,
-            'pages' => $pages,
-            'categories' => $categories,
+            'articles'    => $articles,
+            'page'        => $page,
+            'pages'       => $pages,
+            'total'       => $total,
+            'categories'  => $categories,
             'selectedCat' => $catId,
+            'q'           => $q,
         ]);
     }
 

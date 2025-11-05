@@ -17,6 +17,10 @@
                 <label class="form-label">Mật khẩu</label>
                 <input class="form-control" type="password" name="password" required>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Họ tên</label>
+                <input class="form-control" type="text" name="fullname">
+            </div>
             <button class="btn btn-primary w-100">Đăng ký</button>
         </form>
         <div class="mt-2"><a href="login">Đã có tài khoản? Đăng nhập</a></div>
