@@ -18,11 +18,12 @@ class ArticleQueries
 
     public static function getPublishedArticlesByCategory(): string
     {
-        return "SELECT a.article_id, a.title, a.summary, a.created_at,
+        return "SELECT a.article_id, a.title, a.summary, a.created_at, c.category_name,
                 (SELECT am.media_url FROM article_media am 
                  WHERE am.article_id = a.article_id AND am.media_type = 'image' 
                  ORDER BY am.media_id ASC LIMIT 1) as thumb
                 FROM articles a
+                LEFT JOIN categories c ON a.category_id = c.category_id
                 WHERE a.status = 'published' AND a.category_id = :cid
                 ORDER BY a.created_at DESC
                 LIMIT :per OFFSET :off";
@@ -75,7 +76,7 @@ class ArticleQueries
 
     public static function searchArticles(): string
     {
-        return "SELECT a.article_id, a.title, a.summary, a.created_at,
+        return "SELECT a.article_id, a.title, a.summary, a.created_at, c.category_name,
                        (SELECT am.media_url 
                         FROM article_media am 
                         WHERE am.article_id = a.article_id 
@@ -83,6 +84,7 @@ class ArticleQueries
                         ORDER BY am.media_id ASC 
                         LIMIT 1) AS thumb
                 FROM articles a
+                LEFT JOIN categories c ON a.category_id = c.category_id
                 WHERE a.status='published' 
                   AND (a.title LIKE :kw1 OR a.summary LIKE :kw2)
                 ORDER BY a.created_at DESC
