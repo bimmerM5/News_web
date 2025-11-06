@@ -150,4 +150,9 @@ class ArticleQueries
     {
         return "DELETE FROM article_media WHERE media_id = ? AND article_id = ? AND media_type='image'";
     }
+
+    public static function deleteMediaPrecise(): string
+    {
+        return "DELETE FROM article_media WHERE article_id = ? AND media_id = ? AND media_type='image' AND media_url = ? LIMIT 1";
+    }
 }
