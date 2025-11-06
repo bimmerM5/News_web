@@ -1,40 +1,113 @@
-/***** Global *****/
+/*** Global ***/
 :root{
   --brand:#0d6efd;
+  --brand-2:#38bdf8; /* sky-400 */
+  --radius:16px;
+  --radius-sm:12px;
+  --radius-pill:999px;
+  --shadow-1:0 8px 24px rgba(0,0,0,.25);
+  --shadow-2:0 10px 30px rgba(0,0,0,.18);
+  --ring:0 0 0 .2rem rgba(34,211,238,.18);
+
+  /* Dark theme (default) */
   --bg:#0b1220;
+  --bg-soft:#0d1325;
   --card:#111827;
   --text:#e5e7eb;
   --muted:#9ca3af;
   --accent:#22d3ee;
+  --border:#1f2937;
+  --link:#ffffff;
+  --link-hover:var(--accent);
+  --input-bg:#0f172a;
+  --body-bg: radial-gradient(1200px 900px at 10% -10%, rgba(34,211,238,.14), rgba(34,211,238,0) 70%),
+              radial-gradient(1200px 900px at 110% -10%, rgba(13,110,253,.16), rgba(13,110,253,0) 70%),
+              radial-gradient(1600px 900px at 50% 130%, rgba(2,132,199,.10), rgba(2,132,199,0) 70%),
+              linear-gradient(180deg, #0b1220 0%, #0b1220 55%, #0a101c 100%);
+  --nav-bg: linear-gradient(90deg,rgba(11,18,32,.85), rgba(13,19,37,.9) 30%, rgba(11,18,32,.85));
 }
+
+/* Light theme overrides */
+:root[data-theme="light"]{
+  --bg:#f8fafc;          /* slate-50 */
+  --bg-soft:#ffffff;
+  --card:#ffffff;
+  --text:#0f172a;        /* slate-900 */
+  --muted:#6b7280;       /* slate-500 */
+  --accent:#0ea5e9;      /* sky-500 */
+  --border:#e5e7eb;      /* slate-200 */
+  --link:#0f172a;
+  --link-hover:#0d6efd;
+  --input-bg:#ffffff;
+  --body-bg: linear-gradient(180deg, #f8fafc 0%, #f8fafc 60%, #eef2f7 100%);
+  --nav-bg: rgba(255,255,255,.85);
+  --shadow-2: 0 12px 24px rgba(2,6,23,.08);
+}
+
+html, body{height:100%}
 body{
-  background: radial-gradient(1200px 800px at 10% -10%, rgba(34,211,238,.15), transparent 60%),
-              radial-gradient(1200px 800px at 110% -10%, rgba(13,110,253,.15), transparent 60%),
-              #0b1220;
+  background: var(--body-bg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .navbar{
-  background: linear-gradient(90deg,#0b1220, #0d1325 30%, #0b1220);
-  border-bottom: 1px solid rgba(255,255,255,.06);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: saturate(160%) blur(8px);
+  position: sticky; top: 0; z-index: 1030;
 }
-.navbar .navbar-brand{font-weight:700; letter-spacing:.2px}
-.navbar .nav-link{opacity:.85}
+.navbar::after{content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background: linear-gradient(90deg, transparent, rgba(56,189,248,.45), transparent); opacity:.65; pointer-events:none}
+.navbar .navbar-brand{font-weight:700; letter-spacing:.2px; color: var(--text) !important}
+.navbar .nav-link{opacity:.9; color: var(--text) !important; border-radius: var(--radius-pill); padding:.375rem .75rem}
+.navbar .nav-link:hover{opacity:1; background: rgba(255,255,255,.06)}
+:root[data-theme="light"] .navbar .nav-link:hover{background: rgba(0,0,0,.04)}
+.navbar .nav-link.active{background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff !important}
+.navbar .nav-link:focus-visible, .theme-toggle:focus-visible{outline:none; box-shadow: var(--ring)}
+/* Space out navbar items a bit */
+.navbar .navbar-nav{gap:.5rem}
+
+/* Icon-only nav links (search) */
+.navbar .nav-link.nav-icon{width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius: var(--radius-pill); border:1px solid var(--border)}
+.navbar .nav-link.nav-icon svg{display:block; width:18px; height:18px; fill: currentColor}
+.navbar .nav-link.nav-icon.active{color:#fff}
+
+/* Dropdown (header) */
+.navbar .dropdown-menu{background: var(--card); color: var(--text); border:1px solid var(--border); box-shadow: var(--shadow-2)}
+.navbar .dropdown-item{color: var(--text)}
+.navbar .dropdown-item:hover{background: rgba(255,255,255,.06); color: var(--text)}
+:root[data-theme="light"] .navbar .dropdown-item:hover{background: rgba(0,0,0,.04)}
+.navbar .dropdown-item.active, .navbar .dropdown-item:active{background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff}
+/* Make the admin dropdown toggle look like a pill with a border like theme toggle */
+.navbar .nav-link.dropdown-toggle{display:inline-flex; align-items:center; justify-content:center; height:36px; border:1px solid var(--border); border-radius: var(--radius-pill); padding:0 .75rem}
+.navbar .nav-link.dropdown-toggle:hover{background: rgba(255,255,255,.06)}
+:root[data-theme="light"] .navbar .nav-link.dropdown-toggle:hover{background: rgba(0,0,0,.04)}
 
 .container{max-width:1140px}
+/* Section spacing */
+.py-3:first-child{padding-top:2rem; padding-bottom:1rem}
 
 /* Cards */
 .card{
   background: var(--card);
-  border: 1px solid rgba(255,255,255,.06);
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-2);
   color: var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
 }
+.card:hover{transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,.22); border-color: color-mix(in srgb, var(--accent) 35%, var(--border))}
 /* Article thumbnails */
-.article-thumb{display:block; width:100%; height:170px; object-fit:cover; border-top-left-radius:6px; border-top-right-radius:6px}
+.article-thumb{display:block; width:100%; height:170px; object-fit:cover; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius); transition: transform .25s ease}
+.card:hover .article-thumb{transform: scale(1.03)}
 .card .text-muted{color: var(--muted) !important}
-.card-title a{color:#fff; text-decoration:none}
-.card-title a:hover{color: var(--accent)}
-.badge-cat{background: rgba(34,211,238,.15); color: var(--accent); border:1px solid rgba(34,211,238,.35)}
+.card-title a{color: var(--link); text-decoration:none}
+.card-title a:hover{color: var(--link-hover)}
+.badge-cat{background: rgba(34,211,238,.14); color: var(--accent); border:1px solid rgba(34,211,238,.35); padding:.35rem .55rem; border-radius: var(--radius-pill); font-weight:600}
 
 /* Article */
 .article-title{font-weight:800;}
@@ -55,16 +128,81 @@ body{
 .article-content::after{content:''; display:block; clear:both}
 
 /* Comments */
-.list-group-item{background: #0f172a; color: var(--text); border-color:#1f2937}
+.list-group-item{background: var(--input-bg); color: var(--text); border-color: var(--border)}
 
 /* Forms */
-.form-control, .form-select{background:#0f172a; color:#e5e7eb; border-color:#1f2937}
-.form-control:focus{border-color: var(--accent); box-shadow: 0 0 0 .2rem rgba(34,211,238,.15)}
+.form-control, .form-select{background: var(--input-bg); color: var(--text); border-color: var(--border); border-radius: var(--radius-sm)}
+.form-control::placeholder{color: color-mix(in srgb, var(--muted) 85%, transparent)}
+.form-control:focus{border-color: var(--accent); box-shadow: var(--ring)}
 
 /* Buttons */
-.btn-primary{background: linear-gradient(135deg, var(--brand), #38bdf8); border:0}
+.btn{border-radius: var(--radius-sm); transition: transform .1s ease, box-shadow .15s ease, background-color .2s ease, color .2s ease, border-color .2s ease}
+.btn:active{transform: translateY(1px)}
+.btn-primary{background: linear-gradient(135deg, var(--brand), var(--brand-2)); border:0; color:#fff}
 .btn-primary:hover{filter:brightness(1.05)}
-.btn-outline-light{border-color: rgba(229,231,235,.2)}
+.btn-outline-light{color: var(--text); border-color: rgba(229,231,235,.25)}
+/* Keep hover colors theme-aware; avoid Bootstrap's black text on hover */
+.btn-outline-light:hover{background: rgba(255,255,255,.06); color: var(--text) !important; border-color: rgba(229,231,235,.35)}
+:root[data-theme="light"] .btn-outline-light{color:#0f172a; border-color:#cbd5e1}
+:root[data-theme="light"] .btn-outline-light:hover{background:#f8fafc; color:#0f172a !important; border-color:#cbd5e1}
+.btn-outline-light:focus-visible{outline:none; box-shadow: var(--ring)}
+/* Ensure buttons inside cards don't stretch full width */
+.card .btn{display:inline-flex; align-items:center; justify-content:center; align-self:flex-start; width:auto !important; padding-left:1rem; padding-right:1rem}
+
+/* Pagination */
+.pagination{justify-content:center; gap:.25rem}
+.pagination .page-link{background: var(--card); border-color: var(--border); color: var(--text); border-radius: var(--radius-pill); min-width:42px; text-align:center}
+.pagination .page-item.active .page-link{background: linear-gradient(135deg, var(--brand), var(--brand-2)); border-color: transparent; color:#fff}
+.pagination .page-link:hover{filter:brightness(1.05)}
+
+/* Theme toggle button */
+.theme-toggle{color: var(--text) !important; border-color: var(--border) !important; border-radius: var(--radius-pill); width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; font-size:0}
+.theme-toggle:hover{background: rgba(255,255,255,.06)}
+:root[data-theme="light"] .theme-toggle:hover{background: rgba(0,0,0,.04)}
+.theme-toggle::before{content:'🌙'; font-size:18px; line-height:1}
+:root[data-theme="light"] .theme-toggle::before{content:'☀️'}
+
+/* Navbar toggler visible in both themes */
+.navbar .navbar-toggler{border-color: var(--border)}
+:root[data-theme="light"] .navbar .navbar-toggler-icon{filter: invert(1)}
+
+/* Header greeting chip + theme color */
+.navbar .nav-item.text-white{ color: var(--text) !important; background: color-mix(in srgb, var(--card) 60%, transparent); padding:.25rem .5rem; border-radius: var(--radius-pill) }
+
+/* Select pill styling */
+.form-select{border-radius: var(--radius-pill); padding-left:.75rem; padding-right:2rem}
+:root[data-theme="light"] .form-select{background-color:#fff}
 
 /* Utilities */
-.hero-title{background: linear-gradient(90deg,#fff, #93c5fd); -webkit-background-clip:text; background-clip:text; color:transparent}
+.hero-title{
+  display:inline-block;
+  font-weight:800;
+  color: var(--text);
+  background: transparent !important; /* prevent gradient block */
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+}
+
+/* Header greeting ("Xin chào, ...") should follow theme color */
+.navbar .nav-item.text-white{ color: var(--text) !important; }
+
+/* Links */
+a{color: var(--link)}
+a:hover{color: var(--link-hover)}
+
+/* Theme-aware muted text and labels */
+.text-muted{color: var(--muted) !important}
+label, .form-label{color: var(--muted)}
+
+/* Alerts (Bootstrap friendly) */
+.alert{background: var(--card); color: var(--text); border: 1px solid var(--border)}
+
+/* Subtle global transitions for theme switch */
+body, .navbar, .card, .form-control, .form-select, .list-group-item, .btn, .pagination .page-link{
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+/* Overrides to ensure icons render consistently regardless of encoding */
+.theme-toggle::before{content:"\263E" !important}
+:root[data-theme="light"] .theme-toggle::before{content:"\2600" !important}

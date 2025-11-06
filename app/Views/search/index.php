@@ -20,6 +20,9 @@
                             <img class="article-thumb" src="<?= htmlspecialchars($baseUrl) ?>/<?= htmlspecialchars($a['thumb']) ?>" alt="<?= htmlspecialchars($a['title']) ?>">
                             <?php endif; ?>
                             <div class="card-body d-flex flex-column">
+                                <div class="mb-2">
+                                    <span class="badge badge-cat"><?= htmlspecialchars($a['category_name'] ?? '-') ?></span>
+                                </div>
                                 <h5 class="card-title mb-2"><a href="<?= htmlspecialchars($baseUrl) ?>/article/<?= (int)$a['article_id'] ?>"><?= htmlspecialchars($a['title']) ?></a></h5>
                                 <div class="text-muted small mb-3"><?= htmlspecialchars($a['created_at']) ?></div>
                                 <p class="card-text flex-grow-1"><?= nl2br(htmlspecialchars($a['summary'] ?? '')) ?></p>

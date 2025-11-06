@@ -101,7 +101,8 @@ class ArticleModel extends BaseModel
         
         $sql = ArticleQueries::searchArticles();
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':kw', '%' . $keyword . '%');
+        $stmt->bindValue(':kw1', '%' . $keyword . '%');
+        $stmt->bindValue(':kw2', '%' . $keyword . '%');
         $stmt->bindValue(':per', $perPage, \PDO::PARAM_INT);
         $stmt->bindValue(':off', $offset, \PDO::PARAM_INT);
         $stmt->execute();
@@ -109,7 +110,8 @@ class ArticleModel extends BaseModel
 
         $cntSql = ArticleQueries::countSearchResults();
         $cnt = $this->pdo->prepare($cntSql);
-        $cnt->bindValue(':kw', '%' . $keyword . '%');
+        $cnt->bindValue(':kw1', '%' . $keyword . '%');
+        $cnt->bindValue(':kw2', '%' . $keyword . '%');
         $cnt->execute();
         $total = (int)$cnt->fetchColumn();
 

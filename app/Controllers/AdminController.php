@@ -155,33 +155,70 @@ class AdminController extends Controller
         $uc->execute([$content, $id]);
 
         // Delete selected images first
-        $delIds = $_POST['delete_media_id'] ?? [];
-        if (!empty($delIds)) {
-            $sel = $pdo->prepare(ArticleQueries::getMediaUrlByIdForArticle());
-            $del = $pdo->prepare(ArticleQueries::deleteMediaByIdForArticle());
-            foreach ($delIds as $mid) {
-                $mid = (int)$mid;
-                if ($mid <= 0) { continue; }
-                $sel->execute([$mid, $id]);
-                $url = $sel->fetchColumn();
-                $del->execute([$mid, $id]);
-                if ($url) { $this->removePhysicalFile((string)$url); }
+        $delKeys = $_POST['delete_media_key'] ?? [];
+        if (!empty($delKeys)) {
+            $del = $pdo->prepare(ArticleQueries::deleteMediaPrecise());
+            foreach ($delKeys as $key) {
+                // Key format: "<media_id>|<media_url>"
+                $parts = explode('|', (string)$key, 2);
+                $mid = isset($parts[0]) ? (int)$parts[0] : -1;
+                $url = $parts[1] ?? '';
+                if ($mid < 0 || $url === '') continue;
+                $del->execute([$id, $mid, $url]);
+                if ($del->rowCount() > 0) {
+                    $this->removePhysicalFile((string)$url);
+                }
+            }
+        } else {
+            // Backward compatibility: old form sent only ids
+            $delIds = $_POST['delete_media_id'] ?? [];
+            if (!empty($delIds)) {
+                $sel = $pdo->prepare(ArticleQueries::getMediaUrlByIdForArticle());
+                $del = $pdo->prepare(ArticleQueries::deleteMediaByIdForArticle());
+                foreach ($delIds as $mid) {
+                    $mid = (int)$mid;
+                    $sel->execute([$mid, $id]);
+                    $url = $sel->fetchColumn();
+                    $del->execute([$mid, $id]);
+                    if ($url) { $this->removePhysicalFile((string)$url); }
+                }
             }
         }
 
-        // Update existing media display options
-        $mediaIds = $_POST['existing_media_id'] ?? [];
-        $sizes    = $_POST['existing_size'] ?? [];
-        $aligns   = $_POST['existing_align'] ?? [];
-        $captions = $_POST['existing_caption'] ?? [];
-        if (!empty($mediaIds)) {
+        // Update existing media display options (robust to index/key mismatches)
+        $mediaIdsPosted = $_POST['existing_media_id'] ?? [];
+        $sizesIdx       = $_POST['existing_size'] ?? [];
+        $alignsIdx      = $_POST['existing_align'] ?? [];
+        $captionsIdx    = $_POST['existing_caption'] ?? [];
+
+        // Load current values so we can fallback when some fields are missing
+        $current = [];
+        $mstmt = $pdo->prepare(ArticleQueries::getMedia());
+        $mstmt->execute([$id]);
+        foreach ($mstmt->fetchAll() as $row) {
+            $current[(int)$row['media_id']] = $row;
+        }
+
+        // Build a set of media IDs to update from any source (hidden IDs or associative keys)
+        $idsToUpdate = [];
+        foreach ((array)$mediaIdsPosted as $val) { $v = (int)$val; if ($v >= 0) $idsToUpdate[$v] = true; }
+        foreach (array_keys((array)$sizesIdx) as $k) { $v = (int)$k; if ($v >= 0) $idsToUpdate[$v] = true; }
+        foreach (array_keys((array)$alignsIdx) as $k) { $v = (int)$k; if ($v >= 0) $idsToUpdate[$v] = true; }
+        foreach (array_keys((array)$captionsIdx) as $k) { $v = (int)$k; if ($v >= 0) $idsToUpdate[$v] = true; }
+
+        if (!empty($idsToUpdate)) {
             $um = $pdo->prepare(ArticleQueries::updateMediaOptions());
-            foreach ($mediaIds as $i => $mid) {
-                $mid = (int)$mid;
-                if ($mid <= 0) { continue; }
-                $size = $sizes[$i] ?? 'img-medium';
-                $align = $aligns[$i] ?? 'img-center';
-                $caption = $captions[$i] ?? null;
+            foreach (array_keys($idsToUpdate) as $mid) {
+                if (!isset($current[$mid])) { continue; } // ensure belongs to this article
+                // Prefer associative [media_id] values; fall back to numeric-index arrays; then to current DB
+                $size    = $sizesIdx[$mid]    ?? ($sizesIdx[array_search($mid, (array)$mediaIdsPosted, true) ?? -1]    ?? ($current[$mid]['size_class']  ?? 'img-medium'));
+                $align   = $alignsIdx[$mid]   ?? ($alignsIdx[array_search($mid, (array)$mediaIdsPosted, true) ?? -1]   ?? ($current[$mid]['align_class'] ?? 'img-center'));
+                $caption = $captionsIdx[$mid] ?? ($captionsIdx[array_search($mid, (array)$mediaIdsPosted, true) ?? -1] ?? ($current[$mid]['caption']     ?? null));
+
+                $size = in_array($size, ['img-small','img-medium','img-large'], true) ? $size : ($current[$mid]['size_class'] ?? 'img-medium');
+                $align = in_array($align, ['img-left','img-center','img-right'], true) ? $align : ($current[$mid]['align_class'] ?? 'img-center');
+                $caption = ($caption === null) ? null : (string)$caption;
+
                 $um->execute([$size, $align, $caption, $mid, $id]);
             }
         }

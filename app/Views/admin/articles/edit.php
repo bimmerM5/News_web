@@ -20,38 +20,39 @@
             <?php endforeach; ?>
         </select>
     </div>
+
     <?php if (!empty($images)): ?>
     <div class="mb-3">
         <label class="form-label">Ảnh hiện có</label>
         <div class="row g-3">
-            <?php foreach ($images as $img): ?>
+            <?php foreach ($images as $i => $img): $mid = (int)($img['media_id'] ?? 0); ?>
             <div class="col-12">
                 <div class="card p-2">
                     <div class="d-flex align-items-start gap-3">
                         <img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" style="width:140px;height:90px;object-fit:cover;border-radius:6px">
                         <div class="flex-grow-1 row g-2">
-                            <input type="hidden" name="existing_media_id[]" value="<?= (int)($img['media_id'] ?? 0) ?>">
+                            <input type="hidden" name="existing_media_id[]" value="<?= $mid ?>">
                             <div class="col-md-4">
                                 <label class="form-label small">Kích thước</label>
-                                <select name="existing_size[]" class="form-select form-select-sm">
-                                    <?php $sz = htmlspecialchars($img['size_class'] ?? 'img-medium'); ?>
-                                    <option value="img-small" <?= $sz==='img-small'?'selected':''; ?>>Nhỏ</option>
+                                <?php $sz = htmlspecialchars($img['size_class'] ?? 'img-medium'); ?>
+                                <select name="existing_size[<?= $mid ?>]" class="form-select form-select-sm">
+                                    <option value="img-small"  <?= $sz==='img-small'?'selected':''; ?>>Nhỏ</option>
                                     <option value="img-medium" <?= $sz==='img-medium'?'selected':''; ?>>Trung bình</option>
-                                    <option value="img-large" <?= $sz==='img-large'?'selected':''; ?>>Lớn</option>
+                                    <option value="img-large"  <?= $sz==='img-large'?'selected':''; ?>>Lớn</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small">Căn chỉnh</label>
                                 <?php $al = htmlspecialchars($img['align_class'] ?? 'img-center'); ?>
-                                <select name="existing_align[]" class="form-select form-select-sm">
-                                    <option value="img-left" <?= $al==='img-left'?'selected':''; ?>>Trái</option>
+                                <select name="existing_align[<?= $mid ?>]" class="form-select form-select-sm">
+                                    <option value="img-left"   <?= $al==='img-left'?'selected':''; ?>>Trái</option>
                                     <option value="img-center" <?= $al==='img-center'?'selected':''; ?>>Giữa</option>
-                                    <option value="img-right" <?= $al==='img-right'?'selected':''; ?>>Phải</option>
+                                    <option value="img-right"  <?= $al==='img-right'?'selected':''; ?>>Phải</option>
                                 </select>
                             </div>
                             <div class="col-12">
                                 <label class="form-label small">Caption</label>
-                                <input name="existing_caption[]" class="form-control form-control-sm" value="<?= htmlspecialchars($img['caption'] ?? '') ?>" placeholder="Mô tả ngắn cho ảnh">
+                                <input name="existing_caption[<?= $mid ?>]" class="form-control form-control-sm" value="<?= htmlspecialchars($img['caption'] ?? '') ?>" placeholder="Mô tả ngắn cho ảnh">
                             </div>
                         </div>
                     </div>
@@ -61,6 +62,7 @@
         </div>
     </div>
     <?php endif; ?>
+
     <div class="mb-3">
         <label class="form-label">Thêm ảnh</label>
         <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
@@ -71,12 +73,13 @@
     <div class="mb-3">
         <label class="form-label">Chọn ảnh để xóa</label>
         <div class="row g-2">
-            <?php foreach ($images as $img): ?>
+            <?php foreach ($images as $i => $img): $mid = (int)($img['media_id'] ?? 0); ?>
                 <div class="col-6 col-md-3 text-center">
                     <img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" style="width:100%;height:120px;object-fit:cover;border-radius:6px">
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" name="delete_media_id[]" value="<?= (int)($img['media_id'] ?? 0) ?>" id="del<?= (int)($img['media_id'] ?? 0) ?>">
-                        <label class="form-check-label small" for="del<?= (int)($img['media_id'] ?? 0) ?>">Xóa ảnh này</label>
+                        <?php $key = $mid . '|' . $img['media_url']; ?>
+                        <input class="form-check-input" type="checkbox" name="delete_media_key[]" value="<?= htmlspecialchars($key) ?>" id="del<?= $mid ?>_<?= $i ?>">
+                        <label class="form-check-label small" for="del<?= $mid ?>_<?= $i ?>">Xóa ảnh này</label>
                     </div>
                 </div>
             <?php endforeach; ?>
