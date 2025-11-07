@@ -67,6 +67,14 @@ class UserRepository implements UserRepositoryInterface
         return $stmt->fetch() ?: null;
     }
 
+    public function findByEmail(string $email): ?array
+    {
+        $sql = UserQueries::findByEmail();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$email]);
+        return $stmt->fetch() ?: null;
+    }
+
     public function getProfile(int $userId): ?array
     {
         $sql = UserQueries::getProfile();

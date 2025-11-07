@@ -62,9 +62,18 @@ class AuthController extends Controller
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = (string)($_POST['password'] ?? '');
+        $confirm  = (string)($_POST['confirm_password'] ?? '');
 
-        if ($username === '' || $email === '' || $password === '') {
+        if ($username === '' || $email === '' || $password === '' || $confirm === '') {
             $this->view('auth/register', ['error' => 'Thiếu thông tin']);
+            return;
+        }
+
+        if ($password !== $confirm) {
+            $this->view('auth/register', [
+                'errors' => ['confirm_password' => 'Mật khẩu không khớp'],
+                'old' => ['username' => $username, 'email' => $email],
+            ]);
             return;
         }
 

@@ -22,6 +22,11 @@ class UserModel extends BaseModel
         return $this->repository->findByUsername($username);
     }
 
+    public function findByEmail(string $email): ?array
+    {
+        return $this->repository->findByEmail($email);
+    }
+
     public function getProfile(int $userId): ?array
     {
         return $this->repository->getProfile($userId);
