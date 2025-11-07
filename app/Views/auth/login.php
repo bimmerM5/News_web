@@ -6,11 +6,11 @@
         <?php endif; ?>
         <form method="post" action="login">
             <div class="mb-3">
-                <label class="form-label">Username</label>
+                <label class="form-label">Tên đăng nhập</label>
                 <input class="form-control" type="text" name="username" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label">Mật khẩu</label>
                 <input class="form-control" type="password" name="password" required>
             </div>
             <button class="btn btn-primary w-100">Đăng nhập</button>

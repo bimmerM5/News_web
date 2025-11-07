@@ -1,19 +1,19 @@
-<h1 class="h4 mb-3">Edit Article</h1>
+<h1 class="h4 mb-3">Sửa bài viết</h1>
 <form method="post" action="<?= htmlspecialchars($baseUrl) ?>/admin/articles/<?= (int)$article['article_id'] ?>/update" enctype="multipart/form-data">
     <div class="mb-3">
-        <label class="form-label">Title</label>
+        <label class="form-label">Tiêu đề</label>
         <input type="text" name="title" value="<?= htmlspecialchars($article['title']) ?>" class="form-control" required>
     </div>
     <div class="mb-3">
-        <label class="form-label">Summary</label>
+        <label class="form-label">Tóm tắt</label>
         <textarea name="summary" class="form-control" rows="3"><?= htmlspecialchars($article['summary']) ?></textarea>
     </div>
     <div class="mb-3">
-        <label class="form-label">Content</label>
+        <label class="form-label">Nội dung</label>
         <textarea name="content" class="form-control" rows="6"><?= htmlspecialchars($content ?? '') ?></textarea>
     </div>
     <div class="mb-3">
-        <label class="form-label">Category</label>
+        <label class="form-label">Danh mục</label>
         <select name="category_id" class="form-select">
             <?php foreach ($categories as $c): ?>
                 <option value="<?= (int)$c['category_id'] ?>" <?= $c['category_id']==$article['category_id'] ? 'selected' : '' ?>><?= htmlspecialchars($c['category_name']) ?></option>
@@ -51,7 +51,7 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label small">Caption</label>
+                                <label class="form-label small">Chú thích</label>
                                 <input name="existing_caption[<?= $mid ?>]" class="form-control form-control-sm" value="<?= htmlspecialchars($img['caption'] ?? '') ?>" placeholder="Mô tả ngắn cho ảnh">
                             </div>
                         </div>
@@ -87,7 +87,7 @@
     </div>
     <?php endif; ?>
 
-    <button class="btn btn-primary">Update</button>
+    <button class="btn btn-primary">Cập nhật</button>
 </form>
 
 <script>
@@ -106,7 +106,7 @@
       col.innerHTML = `
         <div class="card p-2">
           <div class="d-flex align-items-start gap-3">
-            <img id="${id}" class="rounded" style="width:140px;height:90px;object-fit:cover" alt="preview">
+            <img id="${id}" class="rounded" style="width:140px;height:90px;object-fit:cover" alt="Xem trước">
             <div class="flex-grow-1 row g-2">
               <div class="col-md-4">
                 <label class="form-label small">Kích thước</label>
@@ -125,7 +125,7 @@
                 </select>
               </div>
               <div class="col-12">
-                <label class="form-label small">Caption</label>
+                <label class="form-label small">Chú thích</label>
                 <input name="image_caption[]" class="form-control form-control-sm" placeholder="Mô tả ngắn cho ảnh">
               </div>
             </div>

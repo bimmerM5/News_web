@@ -7,7 +7,7 @@
         <form method="post" action="register" novalidate>
             <?php $errs = $errors ?? []; $old = $old ?? []; ?>
             <div class="mb-3">
-                <label class="form-label">Username</label>
+                <label class="form-label">Tên đăng nhập</label>
                 <input class="form-control<?= !empty($errs['username']) ? ' is-invalid' : '' ?>" type="text" name="username" value="<?= htmlspecialchars($old['username'] ?? '') ?>" required>
                 <?php if (!empty($errs['username'])): ?>
                     <div class="invalid-feedback"><?= htmlspecialchars($errs['username']) ?></div>

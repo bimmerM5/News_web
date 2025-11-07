@@ -73,7 +73,43 @@ class AdminController extends Controller
     public function deleteCategory(int $id): void
     {
         $this->ensureAdmin();
+        $pdo = Database::getConnection();
+        
+        // Lấy tất cả article_id thuộc danh mục này
+        $stmt = $pdo->prepare(CategoryQueries::getArticleIdsByCategory());
+        $stmt->execute([$id]);
+        $articleIds = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        
+        // Xóa media files và media records của các bài viết
+        foreach ($articleIds as $articleId) {
+            // Lấy tất cả media_url của bài viết
+            $mediaStmt = $pdo->prepare(ArticleQueries::getMedia());
+            $mediaStmt->execute([$articleId]);
+            $mediaList = $mediaStmt->fetchAll();
+            
+            // Xóa file vật lý
+            foreach ($mediaList as $media) {
+                if (!empty($media['media_url'])) {
+                    $this->removePhysicalFile($media['media_url']);
+                }
+            }
+            
+            // Xóa media records (article_media không có foreign key CASCADE nên cần xóa thủ công)
+            $delMedia = $pdo->prepare(ArticleQueries::deleteMedia());
+            $delMedia->execute([$articleId]);
+        }
+        
+        // Xóa tất cả bài viết thuộc danh mục
+        // Các bảng liên quan (article_contents, comments, likes, views, article_tags) sẽ tự động xóa nhờ CASCADE
+        if (!empty($articleIds)) {
+            $placeholders = implode(',', array_fill(0, count($articleIds), '?'));
+            $deleteArticles = $pdo->prepare("DELETE FROM articles WHERE article_id IN ($placeholders)");
+            $deleteArticles->execute($articleIds);
+        }
+        
+        // Cuối cùng mới xóa danh mục
         (new CategoryModel())->delete($id);
+        
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/categories');
     }

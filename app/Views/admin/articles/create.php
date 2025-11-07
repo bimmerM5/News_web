@@ -1,19 +1,19 @@
-<h1 class="h4 mb-3">Create Article</h1>
+<h1 class="h4 mb-3">Tạo bài viết</h1>
 <form method="post" action="<?= htmlspecialchars($baseUrl) ?>/admin/articles/store" enctype="multipart/form-data">
     <div class="mb-3">
-        <label class="form-label">Title</label>
+        <label class="form-label">Tiêu đề</label>
         <input type="text" name="title" class="form-control" required>
     </div>
     <div class="mb-3">
-        <label class="form-label">Summary</label>
+        <label class="form-label">Tóm tắt</label>
         <textarea name="summary" class="form-control" rows="3"></textarea>
     </div>
     <div class="mb-3">
-        <label class="form-label">Content</label>
+        <label class="form-label">Nội dung</label>
         <textarea name="content" class="form-control" rows="6"></textarea>
     </div>
     <div class="mb-3">
-        <label class="form-label">Category</label>
+        <label class="form-label">Danh mục</label>
         <select name="category_id" class="form-select">
             <?php foreach ($categories as $c): ?>
                 <option value="<?= (int)$c['category_id'] ?>"><?= htmlspecialchars($c['category_name']) ?></option>
@@ -21,11 +21,11 @@
         </select>
     </div>
     <div class="mb-3">
-        <label class="form-label">Images</label>
+        <label class="form-label">Hình ảnh</label>
         <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
         <div id="image-options" class="row g-3 mt-2"></div>
     </div>
-    <button class="btn btn-primary">Save</button>
+    <button class="btn btn-primary">Lưu</button>
 </form>
 
 <script>
@@ -44,7 +44,7 @@
       col.innerHTML = `
         <div class="card p-2">
           <div class="d-flex align-items-start gap-3">
-            <img id="${id}" class="rounded" style="width:140px;height:90px;object-fit:cover" alt="preview">
+            <img id="${id}" class="rounded" style="width:140px;height:90px;object-fit:cover" alt="Xem trước">
             <div class="flex-grow-1 row g-2">
               <div class="col-md-4">
                 <label class="form-label small">Kích thước</label>
@@ -63,7 +63,7 @@
                 </select>
               </div>
               <div class="col-12">
-                <label class="form-label small">Caption</label>
+                <label class="form-label small">Chú thích</label>
                 <input name="image_caption[]" class="form-control form-control-sm" placeholder="Mô tả ngắn cho ảnh">
               </div>
             </div>

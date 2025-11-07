@@ -53,4 +53,9 @@ class CategoryQueries
     {
         return "SELECT COUNT(*) FROM articles WHERE category_id = ?";
     }
+
+    public static function getArticleIdsByCategory(): string
+    {
+        return "SELECT article_id FROM articles WHERE category_id = ?";
+    }
 }

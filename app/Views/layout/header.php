@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>News Web</title>
+    <title>Trang Tin Tức</title>
     <script>
       (function(){
         try{
@@ -37,7 +37,7 @@ $active = function(array $prefixes) use ($rel) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark mb-4">
     <div class="container">
-        <a class="navbar-brand" href="<?= htmlspecialchars($baseUrl) ?>/">NEWS WEB</a>
+        <a class="navbar-brand" href="<?= htmlspecialchars($baseUrl) ?>/">TRANG TIN TỨC</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -50,7 +50,7 @@ $active = function(array $prefixes) use ($rel) {
                 <li class="nav-item"><a class="nav-link<?= $active(['/admin/articles']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/admin/articles">Quản lí bài viết</a></li>
                 <li class="nav-item"><a class="nav-link<?= $active(['/admin/categories']) ?>" href="<?= htmlspecialchars($baseUrl) ?>/admin/categories">Quản lí danh mục</a></li>
                 <?php if (!empty($_SESSION['user_id'])): ?>
-                    <li class="nav-item text-white ms-lg-3">Xin chào, <?= htmlspecialchars($_SESSION['username'] ?? 'user') ?></li>
+                    <li class="nav-item text-white ms-lg-3">Xin chào, <?= htmlspecialchars($_SESSION['username'] ?? 'người dùng') ?></li>
                     <li class="nav-item ms-lg-2">
                         <form class="d-inline" method="post" action="<?= htmlspecialchars($baseUrl) ?>/auth/logout">
                             <button class="btn btn-sm btn-outline-light">Đăng xuất</button>
