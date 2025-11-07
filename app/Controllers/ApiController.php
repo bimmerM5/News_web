@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\ArticleModel;
 use App\Models\CommentModel;
+use App\Models\UserModel;
 
 class ApiController extends Controller
 {
@@ -58,5 +59,23 @@ class ApiController extends Controller
         $articleModel = new ArticleModel();
         $articleModel->toggleLike($articleId, (int)$_SESSION['user_id']);
         $this->json(['message' => 'ok']);
+    }
+
+    public function checkAvailability(): void
+    {
+        $type = strtolower((string)($_GET['type'] ?? ''));
+        $value = trim((string)($_GET['value'] ?? ''));
+        if ($value === '' || !in_array($type, ['username', 'email'], true)) {
+            $this->json(['error' => 'Invalid input'], 400);
+            return;
+        }
+        $userModel = new UserModel();
+        $exists = false;
+        if ($type === 'username') {
+            $exists = (bool)$userModel->findByUsername($value);
+        } else {
+            $exists = (bool)$userModel->findByEmail($value);
+        }
+        $this->json(['type' => $type, 'value' => $value, 'exists' => $exists, 'available' => !$exists]);
     }
 }

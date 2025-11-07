@@ -8,6 +8,11 @@ class UserQueries
         return "SELECT user_id, username, password_hash FROM users WHERE username = ?";
     }
 
+    public static function findByEmail(): string
+    {
+        return "SELECT user_id, username, email FROM users WHERE email = ?";
+    }
+
     public static function getProfile(): string
     {
         return "SELECT u.user_id, u.username, up.full_name, up.avatar_url, up.bio

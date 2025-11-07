@@ -65,5 +65,6 @@ $router->get('/api/article/(\\d+)', [App\Controllers\ApiController::class, 'arti
 $router->get('/api/comments', [App\Controllers\ApiController::class, 'comments']);
 $router->post('/api/comments', [App\Controllers\ApiController::class, 'createComment']);
 $router->post('/api/toggle-like', [App\Controllers\ApiController::class, 'toggleLike']);
+$router->get('/api/check-availability', [App\Controllers\ApiController::class, 'checkAvailability']);
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

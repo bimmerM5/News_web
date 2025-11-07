@@ -50,6 +50,7 @@ interface CategoryRepositoryInterface extends RepositoryInterface
 interface UserRepositoryInterface extends RepositoryInterface
 {
     public function findByUsername(string $username): ?array;
+    public function findByEmail(string $email): ?array;
     public function getProfile(int $userId): ?array;
     public function getUserArticles(int $userId): array;
     public function isAdmin(int $userId): bool;
