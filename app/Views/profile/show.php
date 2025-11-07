@@ -2,7 +2,7 @@
     <div class="col-lg-8 mx-auto">
         <div class="card mb-4">
             <div class="card-body d-flex align-items-center">
-                <img src="<?= htmlspecialchars($user['avatar_url'] ?: 'https://ui-avatars.com/api/?name=' . urlencode($user['username'])) ?>" alt="avatar" style="width:72px;height:72px;border-radius:50%;object-fit:cover" class="me-3">
+                <img src="<?= htmlspecialchars($user['avatar_url'] ?: 'https://ui-avatars.com/api/?name=' . urlencode($user['username'])) ?>" alt="Ảnh đại diện" style="width:72px;height:72px;border-radius:50%;object-fit:cover" class="me-3">
                 <div>
                     <div class="h5 mb-0"><?= htmlspecialchars($user['full_name'] ?: $user['username']) ?></div>
                     <div class="text-muted small">@<?= htmlspecialchars($user['username']) ?></div>

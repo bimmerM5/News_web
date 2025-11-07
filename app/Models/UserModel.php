@@ -1,34 +1,51 @@
 <?php
 namespace App\Models;
 
-use App\Queries\UserQueries;
+use App\Queries\UserRepositoryInterface;
+use App\Queries\UserRepository;
 
+/**
+ * User Model - Cải thiện với Repository Pattern
+ */
 class UserModel extends BaseModel
 {
+    private UserRepositoryInterface $repository;
+
+    public function __construct(?\PDO $pdo = null, ?UserRepositoryInterface $repository = null)
+    {
+        parent::__construct($pdo);
+        $this->repository = $repository ?? new UserRepository($this->pdo);
+    }
+
     public function findByUsername(string $username): ?array
     {
-        $sql = UserQueries::findByUsername();
-        $s = $this->pdo->prepare($sql);
-        $s->execute([$username]);
-        $row = $s->fetch();
-        return $row ?: null;
+        return $this->repository->findByUsername($username);
     }
 
     public function getProfile(int $userId): ?array
     {
-        $sql = UserQueries::getProfile();
-        $u = $this->pdo->prepare($sql);
-        $u->execute([$userId]);
-        $row = $u->fetch();
-        return $row ?: null;
+        return $this->repository->getProfile($userId);
     }
 
     public function getUserArticles(int $userId): array
     {
-        $sql = UserQueries::getUserArticles();
-        $a = $this->pdo->prepare($sql);
-        $a->execute([$userId]);
-        return $a->fetchAll();
+        return $this->repository->getUserArticles($userId);
+    }
+
+    /**
+     * Kiểm tra user có phải admin không
+     */
+    public function isAdmin(int $userId): bool
+    {
+        return $this->repository->isAdmin($userId);
+    }
+
+    /**
+     * Đăng ký user mới
+     */
+    public function register(string $username, string $passwordHash, string $email, ?string $fullName = null): int
+    {
+        return $this->repository->register($username, $passwordHash, $email, $fullName);
     }
 }
 

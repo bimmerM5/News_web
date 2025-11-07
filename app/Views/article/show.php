@@ -58,7 +58,7 @@ document.getElementById('btn-send').addEventListener('click', async () => {
   if (!res.error){
     location.reload();
   } else {
-    alert(res.error || 'Error');
+    alert(res.error || 'Lỗi');
   }
 });
 <?php endif; ?>

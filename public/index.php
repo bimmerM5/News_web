@@ -9,6 +9,12 @@ require_once __DIR__ . '/../app/Queries/CategoryQueries.php';
 require_once __DIR__ . '/../app/Queries/CommentQueries.php';
 require_once __DIR__ . '/../app/Queries/UserQueries.php';
 require_once __DIR__ . '/../app/Queries/AdminQueries.php';
+// Repository Pattern - OOP improvements
+require_once __DIR__ . '/../app/Queries/RepositoryInterface.php';
+require_once __DIR__ . '/../app/Queries/ArticleRepository.php';
+require_once __DIR__ . '/../app/Queries/CategoryRepository.php';
+require_once __DIR__ . '/../app/Queries/UserRepository.php';
+require_once __DIR__ . '/../app/Queries/CommentRepository.php';
 require_once __DIR__ . '/../app/Models/BaseModel.php';
 require_once __DIR__ . '/../app/Models/ArticleModel.php';
 require_once __DIR__ . '/../app/Models/CategoryModel.php';
