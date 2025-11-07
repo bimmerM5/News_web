@@ -88,5 +88,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         $stmt->execute([$id]);
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
+
+    public function listAllById(): array
+    {
+        $sql = CategoryQueries::listAllById();
+        return $this->pdo->query($sql)->fetchAll();
+    }
 }
 

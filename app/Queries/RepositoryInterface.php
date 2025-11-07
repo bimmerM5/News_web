@@ -41,5 +41,29 @@ interface CategoryRepositoryInterface extends RepositoryInterface
     public function listWithTotals(): array;
     public function hasArticles(int $id): bool;
     public function getArticleIdsByCategory(int $id): array;
+    public function listAllById(): array;
+}
+
+/**
+ * Interface cho User Repository
+ */
+interface UserRepositoryInterface extends RepositoryInterface
+{
+    public function findByUsername(string $username): ?array;
+    public function getProfile(int $userId): ?array;
+    public function getUserArticles(int $userId): array;
+    public function isAdmin(int $userId): bool;
+    public function register(string $username, string $passwordHash, string $email, ?string $fullName = null): int;
+}
+
+/**
+ * Interface cho Comment Repository
+ */
+interface CommentRepositoryInterface extends RepositoryInterface
+{
+    public function listForArticle(int $articleId): array;
+    public function createComment(int $articleId, int $userId, string $content): int;
+    public function countByArticle(int $articleId): int;
+    public function getUserComments(int $userId): array;
 }
 

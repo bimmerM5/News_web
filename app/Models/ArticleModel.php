@@ -99,6 +99,179 @@ class ArticleModel extends BaseModel
     {
         return $this->repository->getUserArticles($userId);
     }
+
+    /**
+     * Toggle like cho bài viết
+     */
+    public function toggleLike(int $articleId, int $userId): void
+    {
+        $sql = \App\Queries\AdminQueries::toggleLike();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$articleId, $userId]);
+    }
+
+    /**
+     * Lấy tất cả bài viết cho admin (không phân biệt status)
+     */
+    public function getAllForAdmin(): array
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
+     * Lấy bài viết theo ID (đơn giản)
+     */
+    public function findById(int $id): ?array
+    {
+        return $this->repository->find($id);
+    }
+
+    /**
+     * Lấy nội dung bài viết
+     */
+    public function getContent(int $id): string
+    {
+        return $this->repository->getContent($id);
+    }
+
+    /**
+     * Lấy media của bài viết
+     */
+    public function getMedia(int $id): array
+    {
+        return $this->repository->getMedia($id);
+    }
+
+    /**
+     * Tạo bài viết mới (admin)
+     */
+    public function createArticle(string $title, string $summary, string $content, int $userId, int $categoryId): int
+    {
+        $sql = \App\Queries\AdminQueries::createArticle();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$title, $summary, $content, $userId, $categoryId]);
+        $articleId = (int)($stmt->fetchColumn() ?: 0);
+        $stmt->closeCursor();
+        return $articleId;
+    }
+
+    /**
+     * Cập nhật bài viết
+     */
+    public function updateArticle(int $id, string $title, string $summary, int $categoryId): bool
+    {
+        return $this->repository->update($id, [
+            'title' => $title,
+            'summary' => $summary,
+            'category_id' => $categoryId
+        ]);
+    }
+
+    /**
+     * Cập nhật nội dung bài viết
+     */
+    public function updateContent(int $id, string $content): void
+    {
+        $sql = \App\Queries\ArticleQueries::updateContent();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$content, $id]);
+    }
+
+    /**
+     * Xóa bài viết
+     */
+    public function deleteArticle(int $id): bool
+    {
+        return $this->repository->delete($id);
+    }
+
+    /**
+     * Xuất bản bài viết
+     */
+    public function publishArticle(int $id): void
+    {
+        $sql = \App\Queries\AdminQueries::publishArticle();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        $stmt->closeCursor();
+    }
+
+    /**
+     * Tạo media cho bài viết
+     */
+    public function createMedia(int $articleId, string $mediaUrl, string $sizeClass, string $alignClass, ?string $caption): void
+    {
+        $sql = \App\Queries\ArticleQueries::createMedia();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$articleId, $mediaUrl, $sizeClass, $alignClass, $caption]);
+    }
+
+    /**
+     * Xóa media
+     */
+    public function deleteMedia(int $articleId): void
+    {
+        $sql = \App\Queries\ArticleQueries::deleteMedia();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$articleId]);
+    }
+
+    /**
+     * Xóa media chính xác (với media_id và media_url)
+     */
+    public function deleteMediaPrecise(int $articleId, int $mediaId, string $mediaUrl): bool
+    {
+        $sql = \App\Queries\ArticleQueries::deleteMediaPrecise();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$articleId, $mediaId, $mediaUrl]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Lấy media URL theo ID
+     */
+    public function getMediaUrlById(int $mediaId, int $articleId): ?string
+    {
+        $sql = \App\Queries\ArticleQueries::getMediaUrlByIdForArticle();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$mediaId, $articleId]);
+        $url = $stmt->fetchColumn();
+        return $url ? (string)$url : null;
+    }
+
+    /**
+     * Xóa media theo ID
+     */
+    public function deleteMediaById(int $mediaId, int $articleId): void
+    {
+        $sql = \App\Queries\ArticleQueries::deleteMediaByIdForArticle();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$mediaId, $articleId]);
+    }
+
+    /**
+     * Cập nhật tùy chọn media
+     */
+    public function updateMediaOptions(int $mediaId, int $articleId, string $sizeClass, string $alignClass, ?string $caption): void
+    {
+        $sql = \App\Queries\ArticleQueries::updateMediaOptions();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$sizeClass, $alignClass, $caption, $mediaId, $articleId]);
+    }
+
+    /**
+     * Xóa tất cả bài viết theo danh sách ID
+     */
+    public function deleteArticles(array $articleIds): void
+    {
+        if (empty($articleIds)) {
+            return;
+        }
+        $placeholders = implode(',', array_fill(0, count($articleIds), '?'));
+        $sql = "DELETE FROM articles WHERE article_id IN ($placeholders)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($articleIds);
+    }
 }
 
 

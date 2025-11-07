@@ -2,12 +2,9 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Database;
 use App\Models\CategoryModel;
-use App\Queries\UserQueries;
-use App\Queries\ArticleQueries;
-use App\Queries\CategoryQueries;
-use App\Queries\AdminQueries;
+use App\Models\ArticleModel;
+use App\Models\UserModel;
 
 class AdminController extends Controller
 {
@@ -17,10 +14,8 @@ class AdminController extends Controller
             header('Location: ' . (require __DIR__ . '/../Config/config.php')['app']['base_url'] . '/auth/login');
             exit;
         }
-        $pdo = Database::getConnection();
-        $s = $pdo->prepare(UserQueries::checkAdminRole());
-        $s->execute([(int)$_SESSION['user_id']]);
-        if (!$s->fetchColumn()) {
+        $userModel = new UserModel();
+        if (!$userModel->isAdmin((int)$_SESSION['user_id'])) {
             http_response_code(403);
             echo 'Forbidden (admin only)';
             exit;
@@ -30,8 +25,8 @@ class AdminController extends Controller
     public function listCategories(): void
     {
         $this->ensureAdmin();
-        // Show categories ordered by ID ascending only in the admin list
-        $rows = Database::getConnection()->query(CategoryQueries::listAllById())->fetchAll();
+        $categoryModel = new CategoryModel();
+        $rows = $categoryModel->listAllById();
         $this->view('admin/categories/index', ['rows' => $rows]);
     }
 
@@ -73,18 +68,16 @@ class AdminController extends Controller
     public function deleteCategory(int $id): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
+        $categoryModel = new CategoryModel();
+        $articleModel = new ArticleModel();
         
-        // Sử dụng Repository Pattern
-        $categoryModel = new CategoryModel($pdo);
+        // Lấy danh sách ID bài viết thuộc danh mục
         $articleIds = $categoryModel->getArticleIdsByCategory($id);
         
         // Xóa media files và media records của các bài viết
         foreach ($articleIds as $articleId) {
-            // Lấy tất cả media_url của bài viết
-            $mediaStmt = $pdo->prepare(ArticleQueries::getMedia());
-            $mediaStmt->execute([$articleId]);
-            $mediaList = $mediaStmt->fetchAll();
+            // Lấy tất cả media của bài viết
+            $mediaList = $articleModel->getMedia($articleId);
             
             // Xóa file vật lý
             foreach ($mediaList as $media) {
@@ -93,21 +86,17 @@ class AdminController extends Controller
                 }
             }
             
-            // Xóa media records (article_media không có foreign key CASCADE nên cần xóa thủ công)
-            $delMedia = $pdo->prepare(ArticleQueries::deleteMedia());
-            $delMedia->execute([$articleId]);
+            // Xóa media records
+            $articleModel->deleteMedia($articleId);
         }
         
         // Xóa tất cả bài viết thuộc danh mục
-        // Các bảng liên quan (article_contents, comments, likes, views, article_tags) sẽ tự động xóa nhờ CASCADE
         if (!empty($articleIds)) {
-            $placeholders = implode(',', array_fill(0, count($articleIds), '?'));
-            $deleteArticles = $pdo->prepare("DELETE FROM articles WHERE article_id IN ($placeholders)");
-            $deleteArticles->execute($articleIds);
+            $articleModel->deleteArticles($articleIds);
         }
         
         // Cuối cùng mới xóa danh mục
-        (new CategoryModel())->delete($id);
+        $categoryModel->delete($id);
         
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/categories');
@@ -116,16 +105,16 @@ class AdminController extends Controller
     public function listArticles(): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $rows = $pdo->query(ArticleQueries::getAllArticlesForAdmin())->fetchAll();
+        $articleModel = new ArticleModel();
+        $rows = $articleModel->getAllForAdmin();
         $this->view('admin/articles/index', ['rows' => $rows]);
     }
 
     public function createArticle(): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $cats = $pdo->query(CategoryQueries::listAll())->fetchAll();
+        $categoryModel = new CategoryModel();
+        $cats = $categoryModel->listAll();
         $this->view('admin/articles/create', ['categories' => $cats]);
     }
 
@@ -137,12 +126,11 @@ class AdminController extends Controller
         $content = trim($_POST['content'] ?? '');
         $cat = (int)($_POST['category_id'] ?? 0);
         $user = (int)($_SESSION['user_id']);
+        
         if ($title !== '') {
-            $pdo = Database::getConnection();
-            $stmt = $pdo->prepare(AdminQueries::createArticle());
-            $stmt->execute([$title, $summary, $content, $user, $cat]);
-            $articleId = (int)($stmt->fetchColumn() ?: 0);
-            $stmt->closeCursor();
+            $articleModel = new ArticleModel();
+            $articleId = $articleModel->createArticle($title, $summary, $content, $user, $cat);
+            
             if (isset($_FILES['images'])) {
                 $this->handleMultiUploads($articleId);
             } elseif (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
@@ -151,8 +139,7 @@ class AdminController extends Controller
                     $size = ($_POST['image_size'][0] ?? 'img-medium');
                     $align = ($_POST['image_align'][0] ?? 'img-center');
                     $caption = ($_POST['image_caption'][0] ?? null);
-                    $ins = $pdo->prepare(ArticleQueries::createMedia());
-                    $ins->execute([$articleId, $url, $size, $align, $caption]);
+                    $articleModel->createMedia($articleId, $url, $size, $align, $caption);
                 }
             }
         }
@@ -163,18 +150,25 @@ class AdminController extends Controller
     public function editArticle(int $id): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $a = $pdo->prepare(ArticleQueries::getById());
-        $a->execute([$id]);
-        $article = $a->fetch();
-        $c = $pdo->query(CategoryQueries::listAll())->fetchAll();
-        $ac = $pdo->prepare(ArticleQueries::getContent());
-        $ac->execute([$id]);
-        $content = $ac->fetchColumn();
-        $m = $pdo->prepare(ArticleQueries::getMedia());
-        $m->execute([$id]);
-        $images = $m->fetchAll();
-        $this->view('admin/articles/edit', ['article' => $article, 'categories' => $c, 'content' => $content, 'images' => $images]);
+        $articleModel = new ArticleModel();
+        $article = $articleModel->findById($id);
+        if (!$article) {
+            http_response_code(404);
+            echo 'Article not found';
+            return;
+        }
+        
+        $categoryModel = new CategoryModel();
+        $categories = $categoryModel->listAll();
+        $content = $articleModel->getContent($id);
+        $images = $articleModel->getMedia($id);
+        
+        $this->view('admin/articles/edit', [
+            'article' => $article,
+            'categories' => $categories,
+            'content' => $content,
+            'images' => $images
+        ]);
     }
 
     public function updateArticle(int $id): void
@@ -184,24 +178,22 @@ class AdminController extends Controller
         $summary = trim($_POST['summary'] ?? '');
         $content = trim($_POST['content'] ?? '');
         $cat = (int)($_POST['category_id'] ?? 0);
-        $pdo = Database::getConnection();
-        $u = $pdo->prepare(ArticleQueries::updateArticle());
-        $u->execute([$title, $summary, $cat, $id]);
-        $uc = $pdo->prepare(ArticleQueries::updateContent());
-        $uc->execute([$content, $id]);
+        
+        $articleModel = new ArticleModel();
+        $articleModel->updateArticle($id, $title, $summary, $cat);
+        $articleModel->updateContent($id, $content);
 
         // Delete selected images first
         $delKeys = $_POST['delete_media_key'] ?? [];
         if (!empty($delKeys)) {
-            $del = $pdo->prepare(ArticleQueries::deleteMediaPrecise());
             foreach ($delKeys as $key) {
                 // Key format: "<media_id>|<media_url>"
                 $parts = explode('|', (string)$key, 2);
                 $mid = isset($parts[0]) ? (int)$parts[0] : -1;
                 $url = $parts[1] ?? '';
                 if ($mid < 0 || $url === '') continue;
-                $del->execute([$id, $mid, $url]);
-                if ($del->rowCount() > 0) {
+                
+                if ($articleModel->deleteMediaPrecise($id, $mid, $url)) {
                     $this->removePhysicalFile((string)$url);
                 }
             }
@@ -209,33 +201,31 @@ class AdminController extends Controller
             // Backward compatibility: old form sent only ids
             $delIds = $_POST['delete_media_id'] ?? [];
             if (!empty($delIds)) {
-                $sel = $pdo->prepare(ArticleQueries::getMediaUrlByIdForArticle());
-                $del = $pdo->prepare(ArticleQueries::deleteMediaByIdForArticle());
                 foreach ($delIds as $mid) {
                     $mid = (int)$mid;
-                    $sel->execute([$mid, $id]);
-                    $url = $sel->fetchColumn();
-                    $del->execute([$mid, $id]);
-                    if ($url) { $this->removePhysicalFile((string)$url); }
+                    $url = $articleModel->getMediaUrlById($mid, $id);
+                    $articleModel->deleteMediaById($mid, $id);
+                    if ($url) {
+                        $this->removePhysicalFile($url);
+                    }
                 }
             }
         }
 
-        // Update existing media display options (robust to index/key mismatches)
+        // Update existing media display options
         $mediaIdsPosted = $_POST['existing_media_id'] ?? [];
         $sizesIdx       = $_POST['existing_size'] ?? [];
         $alignsIdx      = $_POST['existing_align'] ?? [];
         $captionsIdx    = $_POST['existing_caption'] ?? [];
 
-        // Load current values so we can fallback when some fields are missing
+        // Load current values
         $current = [];
-        $mstmt = $pdo->prepare(ArticleQueries::getMedia());
-        $mstmt->execute([$id]);
-        foreach ($mstmt->fetchAll() as $row) {
+        $images = $articleModel->getMedia($id);
+        foreach ($images as $row) {
             $current[(int)$row['media_id']] = $row;
         }
 
-        // Build a set of media IDs to update from any source (hidden IDs or associative keys)
+        // Build a set of media IDs to update
         $idsToUpdate = [];
         foreach ((array)$mediaIdsPosted as $val) { $v = (int)$val; if ($v >= 0) $idsToUpdate[$v] = true; }
         foreach (array_keys((array)$sizesIdx) as $k) { $v = (int)$k; if ($v >= 0) $idsToUpdate[$v] = true; }
@@ -243,10 +233,9 @@ class AdminController extends Controller
         foreach (array_keys((array)$captionsIdx) as $k) { $v = (int)$k; if ($v >= 0) $idsToUpdate[$v] = true; }
 
         if (!empty($idsToUpdate)) {
-            $um = $pdo->prepare(ArticleQueries::updateMediaOptions());
             foreach (array_keys($idsToUpdate) as $mid) {
-                if (!isset($current[$mid])) { continue; } // ensure belongs to this article
-                // Prefer associative [media_id] values; fall back to numeric-index arrays; then to current DB
+                if (!isset($current[$mid])) { continue; }
+                
                 $size    = $sizesIdx[$mid]    ?? ($sizesIdx[array_search($mid, (array)$mediaIdsPosted, true) ?? -1]    ?? ($current[$mid]['size_class']  ?? 'img-medium'));
                 $align   = $alignsIdx[$mid]   ?? ($alignsIdx[array_search($mid, (array)$mediaIdsPosted, true) ?? -1]   ?? ($current[$mid]['align_class'] ?? 'img-center'));
                 $caption = $captionsIdx[$mid] ?? ($captionsIdx[array_search($mid, (array)$mediaIdsPosted, true) ?? -1] ?? ($current[$mid]['caption']     ?? null));
@@ -255,7 +244,7 @@ class AdminController extends Controller
                 $align = in_array($align, ['img-left','img-center','img-right'], true) ? $align : ($current[$mid]['align_class'] ?? 'img-center');
                 $caption = ($caption === null) ? null : (string)$caption;
 
-                $um->execute([$size, $align, $caption, $mid, $id]);
+                $articleModel->updateMediaOptions($mid, $id, $size, $align, $caption);
             }
         }
 
@@ -268,9 +257,8 @@ class AdminController extends Controller
     public function deleteArticle(int $id): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $d = $pdo->prepare(ArticleQueries::deleteArticle());
-        $d->execute([$id]);
+        $articleModel = new ArticleModel();
+        $articleModel->deleteArticle($id);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/articles');
     }
@@ -278,10 +266,8 @@ class AdminController extends Controller
     public function publishArticle(int $id): void
     {
         $this->ensureAdmin();
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare(AdminQueries::publishArticle());
-        $stmt->execute([$id]);
-        $stmt->closeCursor();
+        $articleModel = new ArticleModel();
+        $articleModel->publishArticle($id);
         $base = (require __DIR__ . '/../Config/config.php')['app']['base_url'];
         header('Location: ' . $base . '/admin/articles');
     }
@@ -290,13 +276,17 @@ class AdminController extends Controller
     {
         if (!isset($_FILES['images'])) { return; }
         $files = $_FILES['images'];
+        $articleModel = new ArticleModel();
+        
         if ($clearExisting) {
-            Database::getConnection()->prepare(ArticleQueries::deleteMedia())->execute([$articleId]);
+            $articleModel->deleteMedia($articleId);
         }
+        
         $sizes = $_POST['image_size'] ?? [];
         $aligns = $_POST['image_align'] ?? [];
         $captions = $_POST['image_caption'] ?? [];
         $count = is_array($files['name']) ? count($files['name']) : 0;
+        
         for ($i=0; $i<$count; $i++) {
             if (!empty($files['tmp_name'][$i]) && is_uploaded_file($files['tmp_name'][$i])) {
                 $file = [
@@ -308,8 +298,7 @@ class AdminController extends Controller
                     $size = $sizes[$i] ?? 'img-medium';
                     $align = $aligns[$i] ?? 'img-center';
                     $caption = $captions[$i] ?? null;
-                    $stmt = Database::getConnection()->prepare(ArticleQueries::createMedia());
-                    $stmt->execute([$articleId, $url, $size, $align, $caption]);
+                    $articleModel->createMedia($articleId, $url, $size, $align, $caption);
                 }
             }
         }

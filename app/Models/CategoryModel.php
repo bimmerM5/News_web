@@ -75,6 +75,14 @@ class CategoryModel extends BaseModel
     {
         return $this->repository->getArticleIdsByCategory($id);
     }
+
+    /**
+     * Lấy tất cả danh mục (theo ID)
+     */
+    public function listAllById(): array
+    {
+        return $this->repository->listAllById();
+    }
 }
 
 

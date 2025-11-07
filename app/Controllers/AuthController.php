@@ -2,9 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Database;
 use App\Models\UserModel;
-use App\Queries\AdminQueries;
 
 class AuthController extends Controller
 {
@@ -73,13 +71,9 @@ class AuthController extends Controller
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $userModel = new UserModel();
 
-        // Lấy PDO connection từ Database 
-        $pdo = Database::getConnection();
-
         try {
-            // Gọi stored procedure để đăng ký (không có full_name)
-            $stmt = $pdo->prepare(AdminQueries::registerUser());
-            $stmt->execute([$username, $hash, $email, null]);
+            // Đăng ký user mới
+            $userModel->register($username, $hash, $email, null);
         } catch (\PDOException $e) {
             // Xử lý trùng username/email (SQLSTATE 23000, driver code 1062)
             $errInfo = $e->errorInfo ?? [];
