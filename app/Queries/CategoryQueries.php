@@ -9,6 +9,12 @@ class CategoryQueries
         return "SELECT * FROM categories ORDER BY category_name";
     }
 
+    // For admin listing: keep a deterministic ascending ID order
+    public static function listAllById(): string
+    {
+        return "SELECT * FROM categories ORDER BY category_id ASC";
+    }
+
     public static function listWithTotals(): string
     {
         return "SELECT c.category_id, c.category_name, c.description, COUNT(a.article_id) AS total

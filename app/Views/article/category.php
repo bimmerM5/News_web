@@ -7,9 +7,19 @@
             <?php foreach ($articles as $a): ?>
             <div class="col-sm-6 col-lg-4">
                 <div class="card h-100">
-                    <?php if (!empty($a['thumb'])): ?>
-                    <img class="article-thumb" src="<?= htmlspecialchars($baseUrl) ?>/<?= htmlspecialchars($a['thumb']) ?>" alt="<?= htmlspecialchars($a['title']) ?>">
-                    <?php endif; ?>
+                    <?php
+                        $src = '';
+                        $rel = (string)($a['thumb'] ?? '');
+                        if ($rel !== '') {
+                            $fsPath = __DIR__ . '/../../../public/' . $rel;
+                            if (is_file($fsPath)) { $src = $baseUrl . '/' . $rel; }
+                        }
+                        if ($src === '') {
+                            $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9" stop-opacity=".18"/><stop offset="1" stop-color="#64748b" stop-opacity=".18"/></linearGradient></defs><rect fill="url(#g)" width="1200" height="675"/><g fill="none" stroke="#94a3b8" stroke-width="16" opacity=".85"><rect x="420" y="245" width="360" height="240" rx="24"/><path d="M520 325h40l20-20h40l20 20h40"/><circle cx="600" cy="365" r="36"/></g></svg>';
+                            $src = 'data:image/svg+xml;base64,' . base64_encode($svg);
+                        }
+                    ?>
+                    <img class="article-thumb" src="<?= htmlspecialchars($src) ?>" alt="<?= htmlspecialchars($a['title']) ?>">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-2"><a href="<?= htmlspecialchars($baseUrl) ?>/article/<?= (int)$a['article_id'] ?>"><?= htmlspecialchars($a['title']) ?></a></h5>
                         <div class="text-muted small mb-3"><?= htmlspecialchars($a['created_at']) ?></div>

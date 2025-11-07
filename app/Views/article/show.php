@@ -6,8 +6,13 @@
         <div class="article-content mb-5">
             <?php if (!empty($images)): ?>
                 <?php foreach ($images as $img): ?>
+                    <?php 
+                        $rel = (string)($img['media_url'] ?? '');
+                        $fsPath = __DIR__ . '/../../../public/' . $rel;
+                        if (!is_file($fsPath)) { continue; }
+                    ?>
                     <figure class="article-image <?= htmlspecialchars($img['size_class'] ?? 'img-medium') ?> <?= htmlspecialchars($img['align_class'] ?? 'img-center') ?>">
-                        <img src="<?= htmlspecialchars($baseUrl . '/' . $img['media_url']) ?>" alt="">
+                        <img src="<?= htmlspecialchars($baseUrl . '/' . $rel) ?>" alt="<?= htmlspecialchars($img['caption'] ?? '') ?>">
                         <?php if (!empty($img['caption'])): ?>
                         <figcaption><?= htmlspecialchars($img['caption']) ?></figcaption>
                         <?php endif; ?>

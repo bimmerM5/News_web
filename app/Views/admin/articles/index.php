@@ -1,8 +1,7 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="admin-articles"><div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h4">Articles</h1>
     <a class="btn btn-primary" href="<?= htmlspecialchars($baseUrl) ?>/admin/articles/create">Create</a>
-</div>
-<table class="table table-bordered">
+</div><div class="table-responsive"><table class="table table-bordered mb-0">
     <thead>
     <tr><th>ID</th><th>Title</th><th>Status</th><th>Category</th><th>Created</th><th>Actions</th></tr>
     </thead>
@@ -28,4 +27,5 @@
         </tr>
     <?php endforeach; ?>
     </tbody>
-</table>
+</table></div></div>
+
