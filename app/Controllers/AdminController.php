@@ -75,10 +75,9 @@ class AdminController extends Controller
         $this->ensureAdmin();
         $pdo = Database::getConnection();
         
-        // Lấy tất cả article_id thuộc danh mục này
-        $stmt = $pdo->prepare(CategoryQueries::getArticleIdsByCategory());
-        $stmt->execute([$id]);
-        $articleIds = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        // Sử dụng Repository Pattern
+        $categoryModel = new CategoryModel($pdo);
+        $articleIds = $categoryModel->getArticleIdsByCategory($id);
         
         // Xóa media files và media records của các bài viết
         foreach ($articleIds as $articleId) {
