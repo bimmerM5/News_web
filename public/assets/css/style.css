@@ -54,6 +54,11 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Sticky footer layout */
+body{min-height:100vh; display:flex; flex-direction:column}
+/* Only the main content container directly under body should stretch */
+body > .container{flex:1 0 auto}
+footer.site-footer{margin-top:auto; border-top:1px solid var(--border); background: transparent}
 .navbar{
   background: var(--nav-bg);
   border-bottom: 1px solid var(--border);
