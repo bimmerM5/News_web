@@ -81,7 +81,32 @@ class AuthController extends Controller
             $stmt = $pdo->prepare(AdminQueries::registerUser());
             $stmt->execute([$username, $hash, $email, null]);
         } catch (\PDOException $e) {
-            $this->view('auth/register', ['error' => 'Không thể đăng ký: ' . $e->getMessage()]);
+            // Xử lý trùng username/email (SQLSTATE 23000, driver code 1062)
+            $errInfo = $e->errorInfo ?? [];
+            $driverCode = $errInfo[1] ?? null; // 1062 for duplicate
+            $msg = (string)($errInfo[2] ?? $e->getMessage());
+            $errors = [];
+            if ($driverCode === 1062 || stripos($msg, 'duplicate') !== false) {
+                if (stripos($msg, "for key 'username'") !== false || stripos($msg, 'username') !== false) {
+                    $errors['username'] = 'Tài khoản đã tồn tại';
+                }
+                if (stripos($msg, "for key 'email'") !== false || stripos($msg, 'email') !== false) {
+                    $errors['email'] = 'Email đã được sử dụng';
+                }
+                if (empty($errors)) {
+                    // fallback chung nếu không xác định được cột
+                    $errors['username'] = 'Tài khoản đã tồn tại';
+                }
+                $this->view('auth/register', [
+                    'errors' => $errors,
+                    'old' => ['username' => $username, 'email' => $email],
+                ]);
+                return;
+            }
+            $this->view('auth/register', [
+                'error' => 'Không thể đăng ký. Vui lòng thử lại sau.',
+                'old' => ['username' => $username, 'email' => $email],
+            ]);
             return;
         }
 

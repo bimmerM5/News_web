@@ -30,7 +30,8 @@ class AdminController extends Controller
     public function listCategories(): void
     {
         $this->ensureAdmin();
-        $rows = (new CategoryModel())->listAll();
+        // Show categories ordered by ID ascending only in the admin list
+        $rows = Database::getConnection()->query(CategoryQueries::listAllById())->fetchAll();
         $this->view('admin/categories/index', ['rows' => $rows]);
     }
 
@@ -301,3 +302,4 @@ class AdminController extends Controller
         if (is_file($path)) { @unlink($path); }
     }
 }
+

@@ -4,14 +4,21 @@
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
-        <form method="post" action="register">
+        <form method="post" action="register" novalidate>
+            <?php $errs = $errors ?? []; $old = $old ?? []; ?>
             <div class="mb-3">
                 <label class="form-label">Username</label>
-                <input class="form-control" type="text" name="username" required>
+                <input class="form-control<?= !empty($errs['username']) ? ' is-invalid' : '' ?>" type="text" name="username" value="<?= htmlspecialchars($old['username'] ?? '') ?>" required>
+                <?php if (!empty($errs['username'])): ?>
+                    <div class="invalid-feedback"><?= htmlspecialchars($errs['username']) ?></div>
+                <?php endif; ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" name="email" required>
+                <input class="form-control<?= !empty($errs['email']) ? ' is-invalid' : '' ?>" type="email" name="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>" required>
+                <?php if (!empty($errs['email'])): ?>
+                    <div class="invalid-feedback"><?= htmlspecialchars($errs['email']) ?></div>
+                <?php endif; ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Mật khẩu</label>
@@ -22,3 +29,4 @@
         <div class="mt-2"><a href="login">Đã có tài khoản? Đăng nhập</a></div>
     </div>
 </div>
+

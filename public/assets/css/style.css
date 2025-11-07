@@ -69,6 +69,8 @@ body{
 .navbar .nav-link:focus-visible, .theme-toggle:focus-visible{outline:none; box-shadow: var(--ring)}
 /* Space out navbar items a bit */
 .navbar .navbar-nav{gap:.5rem}
+/* Hide the dedicated search button in header */
+.navbar a.nav-link[href$="/search"], .navbar a.search-icon{display:none !important}
 
 /* Icon-only nav links (search) */
 .navbar .nav-link.nav-icon{width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius: var(--radius-pill); border:1px solid var(--border)}
@@ -202,6 +204,64 @@ label, .form-label{color: var(--muted)}
 body, .navbar, .card, .form-control, .form-select, .list-group-item, .btn, .pagination .page-link{
   transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
+
+/* Admin Categories: mobile optimization only for this view */
+@media (max-width: 576px){
+  .admin-categories .table{border:0; background: transparent}
+  .admin-categories .table thead{display:none}
+  .admin-categories .table tbody, 
+  .admin-categories .table tr, 
+  .admin-categories .table td{display:block; width:100%}
+  .admin-categories .table tr{background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding:.5rem .75rem; margin-bottom:.75rem; box-shadow: var(--shadow-2)}
+  .admin-categories .table td{border:0; padding:.35rem 0; display:flex; align-items:flex-start; justify-content:space-between; gap:.75rem}
+  .admin-categories .table td::before{content: attr(data-label); font-weight:600; color: var(--muted)}
+  .admin-categories .table td[data-label="Actions"]{justify-content:flex-start; gap:.5rem; flex-wrap:wrap}
+  .admin-categories .table td[data-label="Actions"] form{display:inline-block}
+
+  /* Admin Articles mobile cards */
+  .admin-articles .table{border:0; background: transparent}
+  .admin-articles .table thead{display:none}
+  .admin-articles .table tbody,
+  .admin-articles .table tr,
+  .admin-articles .table td{display:block; width:100%}
+  .admin-articles .table tr{background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding:.5rem .75rem; margin-bottom:.75rem; box-shadow: var(--shadow-2)}
+  .admin-articles .table td{border:0; padding:.35rem 0; display:flex; align-items:flex-start; justify-content:space-between; gap:.75rem}
+  .admin-articles .table td::before{font-weight:600; color: var(--muted)}
+  .admin-articles .table td:nth-child(1)::before{content:'ID'}
+  .admin-articles .table td:nth-child(2)::before{content:'Title'}
+  .admin-articles .table td:nth-child(3)::before{content:'Status'}
+  .admin-articles .table td:nth-child(4)::before{content:'Category'}
+  .admin-articles .table td:nth-child(5)::before{content:'Created'}
+  .admin-articles .table td:nth-child(6)::before{content:'Actions'}
+  .admin-articles .table td:nth-child(6){justify-content:flex-start; gap:.5rem; flex-wrap:wrap}
+  .admin-articles .table td:nth-child(6) form{display:inline-block}
+}
+
+/* Center table headers (applies to all tables) */
+.table thead th, .table thead td{ text-align:center; vertical-align:middle }
+
+/* Tables (theme-aware) */
+/* Force Bootstrap's table CSS variables to derive from our theme tokens */
+.table{
+  --bs-table-color: var(--text);
+  --bs-table-bg: var(--card);
+  --bs-table-border-color: var(--border);
+  --bs-table-striped-bg: rgba(255,255,255,.03);
+  --bs-table-striped-color: var(--text);
+  --bs-table-hover-bg: rgba(255,255,255,.06);
+  --bs-table-hover-color: var(--text);
+}
+:root[data-theme="light"] .table{
+  --bs-table-striped-bg: rgba(0,0,0,.02);
+  --bs-table-hover-bg: rgba(0,0,0,.035);
+}
+/* Apply background and color to all cells (Bootstrap targets this selector) */
+.table > :not(caption) > * > *{background-color: var(--bs-table-bg) !important; color: var(--bs-table-color); border-color: var(--bs-table-border-color)}
+/* Header a bit more elevated */
+.table thead, .table thead > tr > *{--bs-table-bg: var(--bg-soft); --bs-table-color: var(--text)}
+.table-bordered{border-color: var(--border)}
+/* Keep table header title/muted text readable */
+.table .text-muted{color: var(--muted) !important}
 
 /* Overrides to ensure icons render consistently regardless of encoding */
 .theme-toggle::before{content:"\263E" !important}

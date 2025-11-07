@@ -78,6 +78,22 @@ async function postJSON(url, data){
           if(u.pathname.endsWith('/search')) searchLink = a;
         }catch(e){}
       });
+      // Only show admin menu for admin user (bimmer). Hide for normal users like damhieu2005.
+      try{
+        var greeting = nav.querySelector('.nav-item.text-white');
+        var username = '';
+        if(greeting){
+          var t = greeting.textContent || '';
+          var m = t.match(/Xin ch[^,]*,\s*(\S+)/i);
+          if(m && m[1]) username = (m[1]+'').trim();
+        }
+        var isAdmin = username.toLowerCase() === 'bimmer';
+        if(!isAdmin){
+          if(articlesItem) articlesItem.remove();
+          if(categoriesItem) categoriesItem.remove();
+          return;
+        }
+      }catch(e){}
       if(!articlesItem && !categoriesItem) return; // nothing to do
       // Avoid duplicating if already converted
       if(nav.querySelector('#adminMenu')) return;

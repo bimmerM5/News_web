@@ -37,7 +37,7 @@ $active = function(array $prefixes) use ($rel) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark mb-4">
     <div class="container">
-        <a class="navbar-brand" href="<?= htmlspecialchars($baseUrl) ?>/">NEWS</a>
+        <a class="navbar-brand" href="<?= htmlspecialchars($baseUrl) ?>/">NEWS WEB</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav">
             <span class="navbar-toggler-icon"></span>
         </button>
