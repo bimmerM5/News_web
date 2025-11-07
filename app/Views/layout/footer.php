@@ -1,4 +1,8 @@
 </div>
+<footer class="site-footer text-center py-3 text-muted small">
+  Made with ❤️ by Danius, Minjion, dahikuv, Kyrivian
+  
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 async function postJSON(url, data){
