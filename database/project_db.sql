@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2025 at 02:12 PM
+-- Generation Time: Nov 07, 2025 at 05:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -196,25 +196,27 @@ CREATE TABLE `articles` (
   `summary` text DEFAULT NULL,
   `status` enum('draft','published','archived') DEFAULT 'draft',
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `views` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `articles`
 --
 
-INSERT INTO `articles` (`article_id`, `user_id`, `category_id`, `title`, `summary`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 'AI bứt phá 2025', 'Tổng hợp xu hướng AI nổi bật.', 'published', '2025-09-18 23:01:42', '2025-09-18 23:01:42'),
-(2, 2, 2, '10 thói quen sống khỏe', 'Những thói quen nhỏ tạo khác biệt lớn.', 'published', '2025-09-18 23:01:42', '2025-09-18 23:01:42'),
-(3, 2, 3, 'Chung kết bóng đá quốc gia', 'Không khí cuồng nhiệt trước giờ G.', 'published', '2025-09-18 23:01:42', '2025-09-18 23:01:42'),
-(7, 1, 3, 'Barcelona hủy diệt Valencia 6-0 tại La Liga', 'Barcelona có màn trình diễn bùng nổ khi giành chiến thắng 6-0 trước Valencia tại vòng đấu mới nhất của La Liga, với ba cầu thủ cùng lập cú đúp.', 'published', '2025-09-18 23:40:21', '2025-09-18 23:40:47'),
-(8, 1, 4, 'Căng thẳng Nga - Ukraine tiếp tục leo thang với giao tranh ác liệt', 'Các cuộc tấn công mới giữa Nga và Ukraine trong tuần qua đã khiến tình hình chiến sự thêm căng thẳng, với nhiều thương vong và hạ tầng bị phá hủy. Cộng đồng quốc tế tiếp tục kêu gọi hai bên đàm phán hòa bình.', 'published', '2025-09-19 00:29:59', '2025-09-19 00:30:04'),
-(9, 1, 4, 'Động đất mạnh tại Nepal gây thiệt hại nặng nề', 'Một trận động đất mạnh vừa xảy ra ở miền Tây Nepal, khiến hàng chục người thiệt mạng và nhiều công trình bị sập đổ. Chính quyền và lực lượng cứu hộ đang khẩn trương triển khai công tác cứu nạn.', 'published', '2025-09-19 00:47:50', '2025-09-19 00:55:55'),
-(10, 1, 3, 'Manchester City nghiền nát Man United trong derby Manchester (3-0)', 'Manchester United tiếp tục chìm sâu trong khủng hoảng phong độ sau trận thua 0-3 trước Manchester City, với Erling Haaland lập cú đúp. Đây là trận đấu cho thấy những vấn đề nghiêm trọng nơi hàng thủ và khả năng kết liễu trận đấu của Quỷ đỏ.', 'published', '2025-09-19 00:50:07', '2025-09-19 00:55:51'),
-(11, 1, 2, 'Tác động lâu dài của COVID-19 lên tim mạch được cảnh báo trong báo cáo mới', 'Một báo cáo mới cho thấy COVID-19 và hậu COVID đang để lại hậu quả nghiêm trọng cho sức khỏe tim mạch của hàng triệu người trên thế giới, khiến nguy cơ bệnh tim mạch gia tăng. Các chuyên gia kêu gọi sàng lọc sớm và biện pháp phòng ngừa hiệu quả.', 'published', '2025-09-19 00:51:41', '2025-09-19 00:55:53'),
-(12, 1, 3, 'Liverpool thắng nghẹt thở Atletico Madrid 3-2 nhờ bàn thắng muộn của Van Dijk', 'Liverpool mở màn chiến dịch Champions League đầy kịch tính khi đánh bại Atletico Madrid 3-2 ngay tại Anfield. Hai bàn thắng sớm của Robertson và Salah giúp chủ nhà dẫn trước, Atletico gỡ hòa nhờ đôi pha của Marcos Llorente, nhưng Virgil van Dijk đã lên tiếng bằng pha đánh đầu ở phút bù giờ để mang về ba điểm.', 'published', '2025-09-19 00:54:02', '2025-09-19 00:55:48'),
-(13, 1, 1, 'Meta ra mắt kính thông minh “Ray-Ban Display” đánh dấu bước tiến mới trong AR', 'Meta vừa giới thiệu mẫu kính thông minh Ray-Ban Display tích hợp màn hình hiển thị để hỗ trợ thông báo, định vị, xem video và điều khiển bằng giọng nói. Đây là một trong những sản phẩm AR (thực tế tăng cường) được kỳ vọng sẽ giúp đưa kính thông minh từ “công nghệ thí điểm” lên thị trường đại chúng.', 'published', '2025-09-19 00:55:34', '2025-09-19 00:55:46'),
-(29, 1, 2, 'hehe', 'hehe', 'published', '2025-11-04 18:06:08', '2025-11-04 18:06:12');
+INSERT INTO `articles` (`article_id`, `user_id`, `category_id`, `title`, `summary`, `status`, `created_at`, `updated_at`, `views`) VALUES
+(1, 2, 1, 'AI bứt phá 2025', 'Tổng hợp xu hướng AI nổi bật.', 'published', '2025-09-18 23:01:42', '2025-09-18 23:01:42', 0),
+(2, 2, 2, '10 thói quen sống khỏe', 'Những thói quen nhỏ tạo khác biệt lớn.', 'published', '2025-09-18 23:01:42', '2025-09-18 23:01:42', 0),
+(3, 2, 3, 'Chung kết bóng đá quốc gia', 'Không khí cuồng nhiệt trước giờ G.', 'published', '2025-09-18 23:01:42', '2025-09-18 23:01:42', 0),
+(7, 1, 3, 'Barcelona hủy diệt Valencia 6-0 tại La Liga', 'Barcelona có màn trình diễn bùng nổ khi giành chiến thắng 6-0 trước Valencia tại vòng đấu mới nhất của La Liga, với ba cầu thủ cùng lập cú đúp.', 'published', '2025-09-18 23:40:21', '2025-09-18 23:40:47', 0),
+(8, 1, 4, 'Căng thẳng Nga - Ukraine tiếp tục leo thang với giao tranh ác liệt', 'Các cuộc tấn công mới giữa Nga và Ukraine trong tuần qua đã khiến tình hình chiến sự thêm căng thẳng, với nhiều thương vong và hạ tầng bị phá hủy. Cộng đồng quốc tế tiếp tục kêu gọi hai bên đàm phán hòa bình.', 'published', '2025-09-19 00:29:59', '2025-09-19 00:30:04', 0),
+(9, 1, 4, 'Động đất mạnh tại Nepal gây thiệt hại nặng nề', 'Một trận động đất mạnh vừa xảy ra ở miền Tây Nepal, khiến hàng chục người thiệt mạng và nhiều công trình bị sập đổ. Chính quyền và lực lượng cứu hộ đang khẩn trương triển khai công tác cứu nạn.', 'published', '2025-09-19 00:47:50', '2025-09-19 00:55:55', 0),
+(10, 1, 3, 'Manchester City nghiền nát Man United trong derby Manchester (3-0)', 'Manchester United tiếp tục chìm sâu trong khủng hoảng phong độ sau trận thua 0-3 trước Manchester City, với Erling Haaland lập cú đúp. Đây là trận đấu cho thấy những vấn đề nghiêm trọng nơi hàng thủ và khả năng kết liễu trận đấu của Quỷ đỏ.', 'published', '2025-09-19 00:50:07', '2025-09-19 00:55:51', 0),
+(11, 1, 2, 'Tác động lâu dài của COVID-19 lên tim mạch được cảnh báo trong báo cáo mới', 'Một báo cáo mới cho thấy COVID-19 và hậu COVID đang để lại hậu quả nghiêm trọng cho sức khỏe tim mạch của hàng triệu người trên thế giới, khiến nguy cơ bệnh tim mạch gia tăng. Các chuyên gia kêu gọi sàng lọc sớm và biện pháp phòng ngừa hiệu quả.', 'published', '2025-09-19 00:51:41', '2025-09-19 00:55:53', 0),
+(12, 1, 3, 'Liverpool thắng nghẹt thở Atletico Madrid 3-2 nhờ bàn thắng muộn của Van Dijk', 'Liverpool mở màn chiến dịch Champions League đầy kịch tính khi đánh bại Atletico Madrid 3-2 ngay tại Anfield. Hai bàn thắng sớm của Robertson và Salah giúp chủ nhà dẫn trước, Atletico gỡ hòa nhờ đôi pha của Marcos Llorente, nhưng Virgil van Dijk đã lên tiếng bằng pha đánh đầu ở phút bù giờ để mang về ba điểm.', 'published', '2025-09-19 00:54:02', '2025-09-19 00:55:48', 0),
+(13, 1, 1, 'Meta ra mắt kính thông minh “Ray-Ban Display” đánh dấu bước tiến mới trong AR', 'Meta vừa giới thiệu mẫu kính thông minh Ray-Ban Display tích hợp màn hình hiển thị để hỗ trợ thông báo, định vị, xem video và điều khiển bằng giọng nói. Đây là một trong những sản phẩm AR (thực tế tăng cường) được kỳ vọng sẽ giúp đưa kính thông minh từ “công nghệ thí điểm” lên thị trường đại chúng.', 'published', '2025-09-19 00:55:34', '2025-09-19 00:55:46', 0),
+(29, 1, 2, 'hehe', 'hehe', 'published', '2025-11-04 18:06:08', '2025-11-04 18:06:12', 0),
+(30, 1, 2, 'MỘT CỘNG MỘT BẰNG MẤY', 'Anh ko biết', 'published', '2025-11-07 07:32:30', '2025-11-07 07:32:39', 0);
 
 -- --------------------------------------------------------
 
@@ -243,7 +245,8 @@ INSERT INTO `article_contents` (`content_id`, `article_id`, `content`) VALUES
 (11, 11, 'Theo báo cáo xuất bản gần đây, những người từng nhiễm SARS-CoV-2 có nguy cơ phát triển các vấn đề tim mạch cao hơn so với người chưa nhiễm.\r\nCác triệu chứng có thể bao gồm viêm cơ tim, rối loạn nhịp tim, suy tim nhẹ, hoặc các dấu hiệu tổn thương mạch máu. Một trong những nguyên nhân được đề cập là phản ứng viêm kéo dài do virus để lại, cũng như các tổn thương mạch nhỏ (endothelial) do thiếu oxy hoặc do hệ miễn dịch hoạt động mạnh.\r\nBên cạnh đó, chính quyền và các tổ chức y tế quốc tế khuyến nghị:\r\n\r\nCác bệnh nhân hậu COVID nên được theo dõi sức khỏe tim mạch sau khoảng từ vài tuần đến vài tháng kể từ khi khỏi bệnh, đặc biệt nếu có triệu chứng như đau ngực, khó thở, mệt mỏi bất thường.\r\n\r\nTiêm chủng phòng COVID tiếp tục là biện pháp quan trọng để giảm mức độ nghiêm trọng của bệnh và nguy cơ hậu COVID.\r\n\r\nThay đổi lối sống: dinh dưỡng cân bằng, hoạt động thể chất, kiểm soát huyết áp và mỡ máu.'),
 (12, 12, 'Liverpool khởi đầu trận đấu với phong độ đầy tự tin tại Anfield, khi Andy Robertson mở tỉ số ở phút 4 từ pha đá phạt của Mohamed Salah bị chạm chân rồi đổi hướng. Chỉ hai phút sau, Salah nhân đôi cách biệt với một pha phối hợp nhanh và cú dứt điểm lạnh lùng vào góc xa khung thành Atletico.\r\nTuy nhiên, Atletico không để Liverpool dễ dàng áp đặt thế trận. Trước khi hiệp một kết thúc, Marcos Llorente rút ngắn tỉ số với một cú xoạc chân nhẹ nhàng qua chân Ibrahima Konaté và thủ thành Alisson từ đường chuyền bên cánh.\r\nHiệp hai tiếp tục với những pha hãm thành liên tục từ Liverpool, nhưng Atletico đã có bàn gỡ hòa vào khoảng phút 81, tiếp tục là Llorente với một pha volley ngoài vòng cấm, bóng đập người Alexis Mac Allister đổi hướng khiến thủ môn Alisson bó tay.\r\nKhi trận đấu tưởng chừng như sẽ kết thúc với tỉ số hòa, Dominik Szoboszlai treo bóng từ phạt góc ở phút bù giờ (90+2), và Virgil van Dijk đánh đầu chính xác để ấn định chiến thắng nghẹt thở cho Liverpool.\r\nMột chi tiết đáng chú ý: Diego Simeone bị truất quyền chỉ đạo ngay sau bàn thắng cuối cùng sau một tình huống tranh cãi với khán giả.'),
 (13, 13, 'Trong một động thái mới nhất trong cuộc đua thiết bị AR/VR, Meta vừa cho ra mắt mẫu kính thông minh Ray-Ban Display với thiết kế thời trang hơn, lấy cảm hứng từ dòng Ray-Ban nổi tiếng. Sản phẩm cho phép người dùng hiển thị các thông báo, bản đồ dẫn đường, xem video ngắn, và điều khiển qua giọng nói, hướng tới việc sử dụng thực tế trong đời sống hàng ngày thay vì chỉ làm công nghệ trình diễn.\r\nMột số đặc điểm nổi bật của Ray-Ban Display:\r\n\r\nThiết kế nhẹ, mẫu kính giống kính thời trang để giảm cảm giác “máy móc”.\r\nHỗ trợ màn hình nhỏ tích hợp bên trong kính, để hiển thị thông tin cơ bản như thông báo, hướng dẫn, video.\r\nCó điều khiển bằng giọng nói, giúp tương tác rảnh tay.\r\nGiá bán khá cao, khoảng $799, và có những hạn chế như thời lượng pin chưa tốt, phụ thuộc vào điện thoại cho một số tính năng.\r\nNgoài ra, sản phẩm này còn được xem là “bước khởi đầu” cho một thế hệ kính thông minh AR/AI có tính ứng dụng cao hơn. Các đối thủ lớn như Google, Apple, Snap cũng được cho là đang phát triển các mẫu tương tự sẽ ra mắt trong khoảng 2025-2026.'),
-(29, 29, 'hehe');
+(29, 29, 'hehe'),
+(30, 30, 'Trong thời đại công nghệ số phát triển nhanh chóng, thông tin trở thành một trong những yếu tố quan trọng nhất trong đời sống xã hội. Con người ngày nay không chỉ có nhu cầu tiếp cận thông tin mà còn mong muốn cập nhật tin tức nhanh chóng, chính xác và thuận tiện. Việc sử dụng Internet và các thiết bị di động đã làm thay đổi hoàn toàn cách con người tiếp nhận thông tin — thay vì chờ đợi tin tức qua báo in hay truyền hình, người dùng có thể truy cập website để đọc tin mọi lúc, mọi nơi.\r\nChính vì vậy, việc xây dựng một website tin tức trực tuyến là rất cần thiết và mang tính thực tiễn cao. Hệ thống website này không chỉ giúp người đọc dễ dàng tiếp cận các tin tức mới nhất thuộc nhiều lĩnh vực như xã hội, kinh tế, công nghệ, thể thao, giải trí,… mà còn giúp các tổ chức, doanh nghiệp hoặc cá nhân có thể quản lý, đăng tải và phân loại thông tin một cách khoa học, hiệu quả.\r\nBên cạnh đó, trong bối cảnh các nền tảng mạng xã hội đang phát triển mạnh mẽ, lượng thông tin tràn lan và khó kiểm chứng, việc có một nguồn tin đáng tin cậy và được quản lý chuyên nghiệp trở nên vô cùng quan trọng. Website tin tức sẽ đóng vai trò là một kênh truyền thông chính thống, góp phần đảm bảo chất lượng và độ tin cậy của thông tin.\r\nTừ góc độ học tập và nghiên cứu, đề tài “Website Tin Tức” cũng mang tính cấp thiết đối với sinh viên công nghệ thông tin. Đây là cơ hội để sinh viên vận dụng kiến thức đã học về lập trình web, cơ sở dữ liệu, bảo mật, giao diện người dùng và quy trình phát triển phần mềm vào một sản phẩm thực tế. Ngoài ra, đề tài còn giúp rèn luyện kỹ năng làm việc nhóm, kỹ năng phân tích yêu cầu và triển khai dự án theo quy trình khoa học.\r\nTóm lại, việc nghiên cứu và xây dựng Website Tin Tức không chỉ đáp ứng nhu cầu thực tế của xã hội hiện đại mà còn góp phần nâng cao năng lực chuyên môn, kỹ năng nghề nghiệp của người thực hiện. Đây là một đề tài có tính ứng dụng cao, ý nghĩa thực tiễn rõ ràng và giá trị học thuật thiết thực.');
 
 -- --------------------------------------------------------
 
@@ -271,7 +274,8 @@ INSERT INTO `article_media` (`media_id`, `article_id`, `media_url`, `media_type`
 (5, 12, 'uploads/img_20250918_201406_80a17e21.png', 'image', 'hehe', 'img-medium', 'img-center'),
 (0, 29, 'uploads/img_20251104_120608_e62ae775.jpg', 'image', 'meo may be', 'img-medium', 'img-center'),
 (0, 13, 'uploads/img_20251104_124235_28d80c47.png', 'image', 'Kính rayban mới. Nguồn: Google', 'img-medium', 'img-center'),
-(0, 8, 'uploads/img_20251104_125357_2181bd91.png', 'image', 'Tổng Thống Zelinsky và Putin', 'img-large', 'img-center');
+(0, 8, 'uploads/img_20251104_125357_2181bd91.png', 'image', 'Tổng Thống Zelinsky và Putin', 'img-large', 'img-center'),
+(0, 30, 'uploads/img_20251107_013230_183aafa2.png', 'image', 'Mẹo mày bé', 'img-large', 'img-left');
 
 -- --------------------------------------------------------
 
@@ -304,7 +308,8 @@ INSERT INTO `categories` (`category_id`, `category_name`, `description`) VALUES
 (1, 'Tech', 'Tin công nghệ'),
 (2, 'Health', 'Sức khỏe'),
 (3, 'Sports', 'Thể thao'),
-(4, 'World', 'Tin thế giới');
+(4, 'World', 'Tin thế giới'),
+(5, 'Thời tiết', 'Dự báo thời tiết');
 
 -- --------------------------------------------------------
 
@@ -326,7 +331,11 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`comment_id`, `article_id`, `user_id`, `content`, `created_at`) VALUES
 (1, 3, 1, 'hay', '2025-09-18 23:02:29'),
-(2, 7, 1, 'tuyệt vời', '2025-09-18 23:44:15');
+(2, 7, 1, 'tuyệt vời', '2025-09-18 23:44:15'),
+(3, 13, 1, 'asdasd', '2025-11-07 00:19:25'),
+(4, 12, 1, 'ác thật', '2025-11-07 00:43:33'),
+(5, 13, 4, 'để có tiền thì mua', '2025-11-07 00:52:18'),
+(6, 30, 1, 'mẹo mày cũng bé', '2025-11-07 07:33:35');
 
 --
 -- Triggers `comments`
@@ -357,7 +366,11 @@ CREATE TABLE `comment_logs` (
 
 INSERT INTO `comment_logs` (`log_id`, `comment_id`, `action`, `log_time`) VALUES
 (1, 1, 'created', '2025-09-18 23:02:29'),
-(2, 2, 'created', '2025-09-18 23:44:15');
+(2, 2, 'created', '2025-09-18 23:44:15'),
+(3, 3, 'created', '2025-11-07 00:19:25'),
+(4, 4, 'created', '2025-11-07 00:43:33'),
+(5, 5, 'created', '2025-11-07 00:52:18'),
+(6, 6, 'created', '2025-11-07 07:33:35');
 
 -- --------------------------------------------------------
 
@@ -424,7 +437,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `created_at`, `updated_at`, `role_id`) VALUES
 (1, 'bimmer', 'danhtinh240521@gmail.com', '11111111', '2025-09-18 22:52:24', '2025-09-18 23:27:03', 1),
 (2, 'demo', 'demo@example.com', 'demo123', '2025-09-18 23:01:42', '2025-09-18 23:01:42', NULL),
-(3, 'Danius', 'zyject@gmail.com', '$2y$10$e1Tl8gIL/mNxK.6NHulj8eD73Tvu55zzqhNv0df6GA8/PoAx0bMwK', '2025-09-18 23:50:35', '2025-09-18 23:50:35', NULL);
+(3, 'Danius', 'zyject@gmail.com', '$2y$10$e1Tl8gIL/mNxK.6NHulj8eD73Tvu55zzqhNv0df6GA8/PoAx0bMwK', '2025-09-18 23:50:35', '2025-09-18 23:50:35', NULL),
+(4, 'damhieu2005', 'phamtrunghieukg2005@gmail.com', '$2y$10$I/hj81nC9QBHo6n.eorRQOBV6EMT/U2ew84d6JzMobAahRVlw6H1e', '2025-11-07 00:43:57', '2025-11-07 00:43:57', NULL);
 
 -- --------------------------------------------------------
 
@@ -447,7 +461,8 @@ CREATE TABLE `user_profiles` (
 INSERT INTO `user_profiles` (`profile_id`, `user_id`, `full_name`, `avatar_url`, `bio`) VALUES
 (1, 1, 'Danh Bình Tính', NULL, NULL),
 (2, 2, 'Demo User', NULL, NULL),
-(3, 3, 'Zyject', NULL, NULL);
+(3, 3, 'Zyject', NULL, NULL),
+(4, 4, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -514,7 +529,41 @@ INSERT INTO `views` (`view_id`, `article_id`, `user_id`, `view_time`) VALUES
 (37, 13, 1, '2025-11-05 15:04:32'),
 (38, 13, 1, '2025-11-05 15:04:36'),
 (39, 29, 1, '2025-11-05 15:04:40'),
-(40, 13, 1, '2025-11-05 19:10:41');
+(40, 13, 1, '2025-11-05 19:10:41'),
+(41, 13, NULL, '2025-11-07 00:19:10'),
+(42, 13, 1, '2025-11-07 00:19:22'),
+(43, 13, 1, '2025-11-07 00:19:25'),
+(44, 13, 1, '2025-11-07 00:19:33'),
+(45, 13, 1, '2025-11-07 00:19:38'),
+(46, 13, 1, '2025-11-07 00:25:10'),
+(47, 1, 1, '2025-11-07 00:38:26'),
+(48, 7, 1, '2025-11-07 00:39:00'),
+(49, 13, 1, '2025-11-07 00:43:10'),
+(50, 12, 1, '2025-11-07 00:43:17'),
+(51, 12, 1, '2025-11-07 00:43:33'),
+(52, 13, 4, '2025-11-07 00:52:02'),
+(53, 13, 4, '2025-11-07 00:52:18'),
+(54, 12, 4, '2025-11-07 00:55:39'),
+(55, 7, 4, '2025-11-07 00:55:44'),
+(56, 13, 4, '2025-11-07 00:55:51'),
+(57, 8, 4, '2025-11-07 00:55:57'),
+(58, 13, 4, '2025-11-07 00:56:01'),
+(59, 13, 1, '2025-11-07 00:58:34'),
+(60, 29, 1, '2025-11-07 01:10:09'),
+(61, 13, 1, '2025-11-07 01:10:12'),
+(62, 11, 1, '2025-11-07 01:10:21'),
+(63, 2, 4, '2025-11-07 01:10:54'),
+(64, 29, 4, '2025-11-07 01:10:58'),
+(65, 13, 4, '2025-11-07 01:11:01'),
+(66, 12, 4, '2025-11-07 01:11:10'),
+(67, 13, NULL, '2025-11-07 04:06:37'),
+(68, 13, NULL, '2025-11-07 04:30:37'),
+(69, 13, 4, '2025-11-07 05:06:15'),
+(70, 13, 4, '2025-11-07 05:14:35'),
+(71, 30, 1, '2025-11-07 07:32:54'),
+(72, 30, 1, '2025-11-07 07:33:12'),
+(73, 30, 1, '2025-11-07 07:33:36'),
+(74, 30, 1, '2025-11-07 07:34:20');
 
 --
 -- Indexes for dumped tables
@@ -624,31 +673,31 @@ ALTER TABLE `views`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `article_contents`
 --
 ALTER TABLE `article_contents`
-  MODIFY `content_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `content_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `comment_logs`
 --
 ALTER TABLE `comment_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `likes`
@@ -672,19 +721,19 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
-  MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `views`
 --
 ALTER TABLE `views`
-  MODIFY `view_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `view_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- Constraints for dumped tables

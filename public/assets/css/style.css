@@ -266,3 +266,7 @@ body, .navbar, .card, .form-control, .form-select, .list-group-item, .btn, .pagi
 /* Overrides to ensure icons render consistently regardless of encoding */
 .theme-toggle::before{content:"\263E" !important}
 :root[data-theme="light"] .theme-toggle::before{content:"\2600" !important}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--border);}
+.site-footer .heart{color:#ef4444}
